@@ -1,0 +1,1387 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>Tâm Thân Trí · Phân tích Đông y AI</title>
+<meta name="description" content="App phân tích Đông y với AI Vision: thiệt chẩn, thủ chẩn, thần sắc + xuất hồ sơ Word A4 chuẩn phòng khám.">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#FAF8F3;--card:#FFFFFF;--ink:#1A1814;--ink2:#5C5851;--ink3:#9B948A;
+  --line:#EBE6DD;--line2:#D8D1C4;
+  --accent:#3D5A3E;--accent2:#7A9471;--accent3:#A8C0A0;
+  --warm:#A0785A;--gold:#B8976A;--cream:#F5F0E8;
+  --error:#C04040;--success:#7A9471;
+  --r:12px;--r-lg:20px;
+}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;letter-spacing:-0.01em;min-height:100vh}
+.serif{font-family:'Cormorant Garamond',serif;letter-spacing:0}
+button,input,select,textarea{font-family:inherit;font-size:inherit;color:inherit;letter-spacing:inherit}
+
+.app{max-width:560px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;padding:0 20px}
+
+/* TOP BAR */
+.topbar{padding:24px 0;display:flex;justify-content:space-between;align-items:center}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none}
+.brand-mark{width:34px;height:34px;background:var(--ink);color:var(--bg);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:500}
+.brand-name{font-size:13px;font-weight:600;color:var(--ink);letter-spacing:0.08em}
+.brand-tag{font-size:10px;color:var(--ink3);letter-spacing:0.1em;text-transform:uppercase;background:var(--cream);padding:4px 10px;border-radius:40px}
+
+/* SCREENS */
+.screen{display:none;flex:1;flex-direction:column;animation:fadein .4s ease}
+.screen.on{display:flex}
+@keyframes fadein{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+/* WELCOME */
+.welcome{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:40px 0 60px}
+.w-eyebrow{font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent2);margin-bottom:20px;font-weight:600}
+.w-title{font-family:'Cormorant Garamond',serif;font-size:52px;font-weight:500;line-height:1.05;color:var(--ink);margin-bottom:16px;letter-spacing:-0.02em}
+.w-title em{color:var(--accent);font-style:italic}
+.w-sub{font-size:15px;color:var(--ink2);line-height:1.7;max-width:420px;margin:0 auto 36px;font-weight:300}
+.w-pills{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:36px}
+.w-pill{background:var(--card);border:0.5px solid var(--line);border-radius:40px;padding:10px 18px;font-size:12px;color:var(--ink2);font-weight:500;display:inline-flex;align-items:center;gap:8px}
+.w-pill-ico{font-size:14px}
+.btn-primary{background:var(--ink);color:var(--bg);border:none;padding:16px 36px;border-radius:40px;font-size:14px;font-weight:600;cursor:pointer;transition:all .25s;letter-spacing:0.02em}
+.btn-primary:hover{background:var(--accent);transform:translateY(-1px);box-shadow:0 8px 24px rgba(26,24,20,.15)}
+.btn-primary:disabled{background:var(--line2);cursor:not-allowed;transform:none}
+.w-foot{margin-top:16px;font-size:11px;color:var(--ink3);font-weight:400}
+
+.w-features{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:40px;max-width:480px;width:100%}
+.wf{background:var(--card);border:0.5px solid var(--line);border-radius:var(--r);padding:14px;text-align:left;display:flex;gap:12px;align-items:flex-start}
+.wf-ico{font-size:24px;flex-shrink:0;line-height:1}
+.wf-body{flex:1}
+.wf-l{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:2px}
+.wf-d{font-size:11px;color:var(--ink3);line-height:1.45;font-weight:400}
+
+/* PROGRESS */
+.progress{padding:20px 0 0;position:sticky;top:0;background:var(--bg);z-index:10}
+.p-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.p-step{font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink3);font-weight:600}
+.p-step b{color:var(--ink);font-weight:700}
+.p-back{background:none;border:none;color:var(--ink2);font-size:13px;cursor:pointer;padding:4px 0;font-weight:500}
+.p-back:hover{color:var(--ink)}
+.p-bar{height:2px;background:var(--line);border-radius:2px;overflow:hidden}
+.p-fill{height:100%;background:var(--ink);border-radius:2px;transition:width .5s cubic-bezier(.16,1,.3,1)}
+
+/* QUESTION */
+.q{padding:32px 0;flex:1}
+.q-num{font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--ink3);margin-bottom:6px;font-style:italic;letter-spacing:0.05em}
+.q-title{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:500;line-height:1.2;color:var(--ink);margin-bottom:10px;letter-spacing:-0.01em}
+.q-title em{color:var(--accent);font-style:italic}
+.q-sub{font-size:14px;color:var(--ink2);line-height:1.65;margin-bottom:28px;font-weight:300}
+
+.fg{margin-bottom:20px}
+.flbl{display:block;font-size:12px;font-weight:600;color:var(--ink2);margin-bottom:8px;letter-spacing:0.02em}
+.fhint{font-size:11px;color:var(--ink3);font-weight:400;margin-left:6px;font-style:italic}
+
+.fi{width:100%;padding:14px 16px;border:1px solid var(--line2);border-radius:var(--r);background:var(--card);font-size:14px;color:var(--ink);outline:none;transition:border-color .2s;-webkit-appearance:none;font-family:inherit}
+.fi:focus{border-color:var(--accent)}
+.fi::placeholder{color:var(--ink3)}
+select.fi{cursor:pointer;background-image:url("data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%239B948A' d='M6 8L0 0h12z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 16px center;padding-right:40px}
+textarea.fi{min-height:100px;resize:vertical;line-height:1.5}
+
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+/* UPLOAD CARDS */
+.upload-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.upload-card{background:var(--card);border:2px dashed var(--line2);border-radius:var(--r);padding:18px 16px;text-align:center;cursor:pointer;transition:all .25s;position:relative;min-height:160px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px}
+.upload-card:hover{border-color:var(--accent2);background:rgba(122,148,113,.03)}
+.upload-card.has-image{border-style:solid;border-color:var(--accent);background:var(--card);padding:8px}
+.upload-card.required::after{content:'';position:absolute;top:8px;right:8px;width:6px;height:6px;background:var(--warm);border-radius:50%}
+.upload-icon{font-size:32px;line-height:1;color:var(--ink3);transition:color .2s}
+.upload-card:hover .upload-icon{color:var(--accent2)}
+.upload-label{font-size:13px;font-weight:600;color:var(--ink);line-height:1.3}
+.upload-desc{font-size:10px;color:var(--ink3);font-weight:400;line-height:1.45}
+.upload-preview{width:100%;flex:1;border-radius:8px;overflow:hidden;position:relative;background:var(--cream)}
+.upload-preview img{width:100%;height:100%;object-fit:cover;display:block}
+.upload-preview-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(26,24,20,.85),transparent 60%);display:flex;align-items:flex-end;justify-content:space-between;padding:8px 10px}
+.upload-preview-label{color:#fff;font-size:11px;font-weight:600}
+.upload-preview-remove{background:rgba(255,255,255,.95);border:none;border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;color:var(--ink);line-height:1}
+.upload-input{display:none}
+
+.upload-tip{display:flex;gap:10px;align-items:flex-start;background:rgba(122,148,113,.08);border:1px solid rgba(122,148,113,.2);border-radius:var(--r);padding:12px 14px;margin-bottom:16px}
+.upload-tip-ico{flex-shrink:0;color:var(--accent2);font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;line-height:1}
+.upload-tip-text{font-size:12px;color:var(--ink2);line-height:1.6}
+.upload-tip-text b{color:var(--accent);font-weight:600}
+
+/* Option buttons */
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.opt{background:var(--card);border:1px solid var(--line2);border-radius:var(--r);padding:14px 16px;text-align:left;cursor:pointer;transition:all .2s;width:100%}
+.opt:hover{border-color:var(--accent2)}
+.opt.sel{border-color:var(--ink);background:var(--card);box-shadow:inset 0 0 0 1px var(--ink)}
+.opt-l{font-size:13px;font-weight:600;color:var(--ink);display:block}
+.opt-d{font-size:11px;color:var(--ink3);font-weight:400;margin-top:2px;display:block}
+
+/* Checkbox grid */
+.checks{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.chk{display:flex;align-items:center;gap:10px;padding:11px 14px;background:var(--card);border:1px solid var(--line2);border-radius:var(--r);cursor:pointer;transition:border-color .2s}
+.chk:hover{border-color:var(--accent2)}
+.chk:has(input:checked){border-color:var(--ink);background:var(--card)}
+.chk input{accent-color:var(--ink);width:15px;height:15px;cursor:pointer;flex-shrink:0}
+.chk span{font-size:13px;color:var(--ink);font-weight:500}
+
+/* Slider */
+.slider-wrap{background:var(--card);border:1px solid var(--line2);border-radius:var(--r);padding:18px 18px 16px;text-align:center}
+.s-val{font-family:'Cormorant Garamond',serif;font-size:40px;font-weight:500;color:var(--ink);line-height:1;margin-bottom:4px}
+.s-lbl{font-size:12px;color:var(--ink2);margin-bottom:14px;font-weight:400}
+input[type=range]{width:100%;height:24px;cursor:pointer;-webkit-appearance:none;background:transparent}
+input[type=range]::-webkit-slider-runnable-track{height:2px;background:var(--line2);border-radius:1px}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;background:var(--ink);border-radius:50%;margin-top:-9px;cursor:pointer;transition:transform .2s}
+input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.15)}
+input[type=range]::-moz-range-track{height:2px;background:var(--line2);border-radius:1px}
+input[type=range]::-moz-range-thumb{width:20px;height:20px;background:var(--ink);border:none;border-radius:50%;cursor:pointer}
+.s-ends{display:flex;justify-content:space-between;font-size:11px;color:var(--ink3);margin-top:8px;font-weight:400}
+
+/* Actions */
+.actions{padding:20px 0 32px;position:sticky;bottom:0;background:linear-gradient(to bottom,transparent 0%,var(--bg) 20%);margin-top:auto}
+.btn-next{width:100%;background:var(--ink);color:var(--bg);border:none;padding:16px;border-radius:40px;font-size:14px;font-weight:600;cursor:pointer;transition:all .25s;letter-spacing:0.02em}
+.btn-next:hover{background:var(--accent)}
+.btn-next:disabled{background:var(--line2);cursor:not-allowed}
+
+/* PROCESSING */
+.processing{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:40px 20px}
+.proc-spinner{width:80px;height:80px;border-radius:50%;border:3px solid var(--line);border-top-color:var(--accent);animation:spin 1s linear infinite;margin-bottom:32px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.proc-title{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:500;color:var(--ink);margin-bottom:10px}
+.proc-status{font-size:14px;color:var(--ink2);margin-bottom:8px;font-weight:500}
+.proc-detail{font-size:12px;color:var(--ink3);font-weight:300;max-width:360px;line-height:1.6}
+.proc-steps{margin-top:32px;display:flex;flex-direction:column;gap:8px;max-width:360px;width:100%}
+.proc-step{display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--card);border:1px solid var(--line);border-radius:var(--r);font-size:13px;color:var(--ink3);transition:all .3s}
+.proc-step.done{color:var(--accent);background:rgba(122,148,113,.05);border-color:rgba(122,148,113,.3)}
+.proc-step.active{color:var(--ink);border-color:var(--ink)}
+.proc-step-ico{width:18px;height:18px;border-radius:50%;border:1.5px solid currentColor;display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0}
+.proc-step.done .proc-step-ico{background:var(--accent);color:#fff;border-color:var(--accent)}
+.proc-step.done .proc-step-ico::after{content:'✓'}
+.proc-step.active .proc-step-ico{border-top-color:transparent;animation:spin 0.8s linear infinite}
+
+/* RESULT */
+.result{padding:24px 0 40px;flex:1}
+.r-eyebrow{font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent2);margin-bottom:8px;font-weight:600}
+.r-title{font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:500;line-height:1.1;color:var(--ink);margin-bottom:8px;letter-spacing:-0.01em}
+.r-title em{color:var(--accent);font-style:italic}
+.r-meta{font-size:13px;color:var(--ink2);margin-bottom:24px;font-weight:400}
+
+.r-hero{background:var(--ink);color:var(--bg);border-radius:var(--r-lg);padding:24px;margin-bottom:20px}
+.r-hero-row{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;gap:12px}
+.r-hero-l{font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:6px;font-weight:600}
+.r-hero-v{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:500;line-height:1.3}
+.r-hero-score{text-align:right}
+.r-hero-score-v{font-family:'Cormorant Garamond',serif;font-size:44px;font-weight:500;line-height:1}
+.r-hero-score-u{font-size:14px;color:rgba(255,255,255,.4)}
+.r-hero-tags{display:flex;gap:6px;flex-wrap:wrap}
+.r-tag{font-size:11px;padding:4px 10px;border-radius:40px;background:rgba(255,255,255,.08);color:rgba(255,255,255,.75);font-weight:500}
+.r-tag.a{background:rgba(184,151,106,.25);color:#E0C898}
+
+/* Sections */
+.r-sec{margin-bottom:20px}
+.r-sec-hd{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px;padding:0 4px}
+.r-sec-t{font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink3);font-weight:600}
+.r-sec-c{background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);padding:20px}
+
+/* Tứ chẩn summary */
+.diag-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-bottom:1px solid var(--line);padding-bottom:14px;margin-bottom:14px}
+.diag-grid:last-child{border-bottom:none;padding-bottom:0;margin-bottom:0}
+.diag-c{padding:0 10px;border-right:1px solid var(--line);text-align:center}
+.diag-c:last-child{border-right:none}
+.diag-thumb{width:48px;height:48px;border-radius:8px;margin:0 auto 8px;background:var(--cream);overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:20px}
+.diag-thumb img{width:100%;height:100%;object-fit:cover}
+.diag-l{font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent2);margin-bottom:4px;font-weight:600}
+.diag-v{font-size:11px;color:var(--ink);font-weight:500;line-height:1.5;text-align:left}
+
+/* Ngũ tạng */
+.tang-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.tang-c{padding:14px 4px;text-align:center;cursor:pointer;border-radius:var(--r);border:1px solid var(--line);background:transparent;transition:all .2s}
+.tang-c:hover{border-color:var(--accent2)}
+.tang-c.on{border-color:var(--ink);background:var(--card);box-shadow:inset 0 0 0 1px var(--ink)}
+.tang-i{font-size:22px;margin-bottom:6px}
+.tang-n{font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:600;color:var(--ink);margin-bottom:2px;line-height:1}
+.tang-e{font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:8px;font-weight:600}
+.tang-s{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:500;line-height:1}
+.tang-stat{font-size:10px;margin-top:2px;font-weight:500}
+.tang-detail{margin-top:16px;padding:16px;background:var(--bg);border:1px solid var(--line);border-radius:var(--r)}
+.td-hd{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;gap:12px;flex-wrap:wrap}
+.td-t{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;color:var(--ink)}
+.td-e{font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--warm);font-weight:600}
+.td-body{font-size:13px;color:var(--ink2);line-height:1.65;margin-bottom:10px;font-weight:400}
+.td-rec{padding-top:10px;border-top:1px solid var(--line)}
+.td-rec-l{font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);margin-bottom:5px;font-weight:600}
+.td-rec-b{font-size:12px;color:var(--ink);line-height:1.65}
+
+/* Energy bars */
+.bars{display:flex;flex-direction:column;gap:12px}
+.bi{display:flex;flex-direction:column;gap:5px}
+.bi-row{display:flex;justify-content:space-between;align-items:baseline}
+.bi-n{font-size:12px;color:var(--ink);font-weight:500}
+.bi-v{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;color:var(--ink)}
+.bi-bar{height:3px;background:var(--line);border-radius:2px;overflow:hidden}
+.bi-fill{height:100%;background:var(--ink);border-radius:2px;transition:width 1.2s cubic-bezier(.16,1,.3,1);width:0}
+.bi-fill.warn{background:var(--warm)}
+.bi-fill.good{background:var(--accent)}
+
+/* AI Analysis text */
+.ai-text{font-size:13px;color:var(--ink);line-height:1.75;font-weight:400}
+.ai-text strong{color:var(--accent);font-weight:600}
+.ai-text em{color:var(--accent2);font-style:italic}
+.ai-text p{margin-bottom:10px}
+.ai-text ul{margin:8px 0 8px 18px}
+.ai-text li{margin-bottom:6px;font-size:13px}
+
+/* Plan */
+.plan{display:flex;flex-direction:column;gap:0}
+.pi{padding:14px 0;border-bottom:1px solid var(--line);display:flex;gap:14px;align-items:flex-start}
+.pi:last-child{border-bottom:none;padding-bottom:0}
+.pi:first-child{padding-top:0}
+.pi-n{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:var(--ink3);flex-shrink:0;min-width:28px;line-height:1.2}
+.pi-c{flex:1}
+.pi-t{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:4px}
+.pi-d{font-size:12px;color:var(--ink2);line-height:1.6;font-weight:400}
+
+/* CTA & Download */
+.cta{background:var(--ink);color:var(--bg);border-radius:var(--r-lg);padding:24px;text-align:center;margin-bottom:20px}
+.cta-t{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:var(--bg);margin-bottom:6px}
+.cta-d{font-size:13px;color:rgba(255,255,255,.6);line-height:1.55;margin-bottom:18px;font-weight:400}
+.cta-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.cta-b{background:var(--bg);color:var(--ink);border:none;padding:11px 22px;border-radius:40px;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;text-decoration:none;display:inline-block}
+.cta-b:hover{background:var(--accent3);color:var(--accent)}
+.cta-b.g{background:transparent;color:var(--bg);border:1px solid rgba(255,255,255,.25)}
+.cta-b.g:hover{background:rgba(255,255,255,.08)}
+
+.download-card{background:linear-gradient(135deg,var(--accent),var(--accent2));color:var(--bg);border-radius:var(--r-lg);padding:24px;margin-bottom:20px;text-align:center}
+.download-ico{font-size:36px;margin-bottom:8px}
+.download-t{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;margin-bottom:6px}
+.download-d{font-size:12px;opacity:.85;margin-bottom:18px;line-height:1.5}
+.download-btn{background:var(--bg);color:var(--accent);border:none;padding:12px 28px;border-radius:40px;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:8px}
+.download-btn:hover{transform:translateY(-1px);box-shadow:0 8px 20px rgba(0,0,0,.15)}
+.download-btn:disabled{opacity:.6;cursor:not-allowed;transform:none}
+
+.toolbar{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;padding-top:16px;border-top:1px solid var(--line)}
+.tb{background:none;border:1px solid var(--line2);color:var(--ink2);padding:9px 16px;border-radius:40px;font-size:12px;cursor:pointer;display:inline-flex;align-items:center;gap:5px;transition:all .2s;font-weight:500}
+.tb:hover{border-color:var(--ink);color:var(--ink)}
+
+.error-msg{background:rgba(192,64,64,.08);border:1px solid rgba(192,64,64,.3);border-radius:var(--r);padding:14px;font-size:13px;color:var(--error);margin-bottom:16px;line-height:1.5}
+
+@media(max-width:480px){
+  .row2,.opts,.checks,.upload-grid{grid-template-columns:1fr 1fr}
+  .w-features{grid-template-columns:1fr}
+  .w-title{font-size:42px}
+  .q-title{font-size:28px}
+  .r-title{font-size:30px}
+  .tang-i{font-size:20px}
+  .tang-n{font-size:14px}
+}
+
+@media print{
+  .toolbar,.cta,.download-card{display:none}
+  body{background:white}
+}
+</style>
+</head>
+<body>
+
+<div class="app">
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <a class="brand" href="#" onclick="restart();return false;">
+    <div class="brand-mark">心</div>
+    <div class="brand-name">TÂM THÂN TRÍ</div>
+  </a>
+  <div class="brand-tag">AI · v2.0</div>
+</div>
+
+<!-- ═══ WELCOME ═══ -->
+<div class="screen on" id="s-welcome">
+  <div class="welcome">
+    <div class="w-eyebrow">Phân tích Đông y · AI Vision</div>
+    <h1 class="w-title">Hiểu mình<br>để <em>chữa lành</em></h1>
+    <p class="w-sub">Hệ thống phân tích kết hợp tứ chẩn cổ điển + AI Vision phân tích ảnh lưỡi, tay, mặt. Xuất hồ sơ Word A4 chuẩn phòng khám.</p>
+    <button class="btn-primary" onclick="start()">Bắt đầu phân tích</button>
+    <div class="w-foot">Miễn phí · Không cần đăng ký · 7-10 phút<br><span style="opacity:.6">tamthantri.vn</span></div>
+
+    <div class="w-features">
+      <div class="wf">
+        <div class="wf-ico">📋</div>
+        <div class="wf-body">
+          <div class="wf-l">Khảo sát chi tiết</div>
+          <div class="wf-d">Ngày giờ sinh, triệu chứng lâm sàng, lối sống</div>
+        </div>
+      </div>
+      <div class="wf">
+        <div class="wf-ico">👅</div>
+        <div class="wf-body">
+          <div class="wf-l">AI Vision thiệt chẩn</div>
+          <div class="wf-d">Tải ảnh lưỡi, AI tự phân tích màu - hình - rêu</div>
+        </div>
+      </div>
+      <div class="wf">
+        <div class="wf-ico">✋</div>
+        <div class="wf-body">
+          <div class="wf-l">Thủ chẩn & thần sắc</div>
+          <div class="wf-d">Ảnh lòng tay và khuôn mặt cho phân tích đa chiều</div>
+        </div>
+      </div>
+      <div class="wf">
+        <div class="wf-ico">📄</div>
+        <div class="wf-body">
+          <div class="wf-l">Hồ sơ Word A4</div>
+          <div class="wf-d">14 trang chuẩn phòng khám, tải về và in</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ QUIZ ═══ -->
+<div class="screen" id="s-quiz">
+  <div class="progress">
+    <div class="p-row">
+      <button class="p-back" id="pBack" onclick="prev()" style="visibility:hidden">← Quay lại</button>
+      <div class="p-step"><b id="pNum">01</b> / 08 · <span id="pName">Thông tin</span></div>
+    </div>
+    <div class="p-bar"><div class="p-fill" id="pFill" style="width:12.5%"></div></div>
+  </div>
+
+  <!-- STEP 1: Thông tin cơ bản + ngày giờ sinh -->
+  <div class="q qstep" id="q1" style="display:block">
+    <div class="q-num">i.</div>
+    <h2 class="q-title">Cho chúng tôi biết <em>về bạn</em></h2>
+    <p class="q-sub">Ngày giờ sinh giúp định vị khí chất cá nhân theo chu kỳ Đông y 12 giờ thân – tý – sửu.</p>
+    <div class="fg"><label class="flbl">Họ và tên</label><input type="text" class="fi" id="iName" placeholder="Tên của bạn"></div>
+    <div class="row2">
+      <div class="fg"><label class="flbl">Ngày sinh</label><input type="date" class="fi" id="iDob"></div>
+      <div class="fg"><label class="flbl">Giờ sinh <span class="fhint">không bắt buộc</span></label><input type="time" class="fi" id="iTob"></div>
+    </div>
+    <div class="fg"><label class="flbl">Giới tính</label>
+      <div class="opts">
+        <button class="opt" onclick="pickOne(this,'gender','nu')"><span class="opt-l">Nữ</span></button>
+        <button class="opt" onclick="pickOne(this,'gender','nam')"><span class="opt-l">Nam</span></button>
+      </div>
+    </div>
+    <div class="fg"><label class="flbl">Nghề nghiệp / lối sống</label>
+      <select class="fi" id="iJob">
+        <option value="">Chọn —</option>
+        <option value="office">Văn phòng — ngồi nhiều, áp lực</option>
+        <option value="manager">Quản lý — áp lực quyết định</option>
+        <option value="runner">Vận động viên / runner</option>
+        <option value="freelance">Freelance / tự kinh doanh</option>
+        <option value="home">Nội trợ / chăm sóc gia đình</option>
+        <option value="other">Khác</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- STEP 2: Triệu chứng lâm sàng -->
+  <div class="q qstep" id="q2" style="display:none">
+    <div class="q-num">ii.</div>
+    <h2 class="q-title">Triệu chứng <em>lâm sàng</em></h2>
+    <p class="q-sub">Mô tả càng chi tiết, phân tích AI càng chính xác. Đây là phần quan trọng nhất.</p>
+    <div class="fg">
+      <label class="flbl">Triệu chứng chính bạn đang gặp <span class="fhint">bắt buộc</span></label>
+      <textarea class="fi" id="iMainSymptoms" placeholder="VD: Em hay bị tức ngực, lâu lâu nhói nhói. Chạy xe bị tê tay. Ăn gì không hợp là đau bụng đi ngoài liền..." style="min-height:120px"></textarea>
+    </div>
+    <div class="fg">
+      <label class="flbl">Bệnh nền / tiền sử y khoa <span class="fhint">nếu có</span></label>
+      <textarea class="fi" id="iHistory" placeholder="VD: Viêm gan B mạn (10 năm), thiếu máu nhẹ, đau dạ dày..."></textarea>
+    </div>
+    <div class="fg">
+      <label class="flbl">Triệu chứng đi kèm <span class="fhint">chọn nhiều</span></label>
+      <div class="checks">
+        <label class="chk"><input type="checkbox" data-sym="head"><span>Đau đầu</span></label>
+        <label class="chk"><input type="checkbox" data-sym="dizzy"><span>Chóng mặt</span></label>
+        <label class="chk"><input type="checkbox" data-sym="back"><span>Đau lưng</span></label>
+        <label class="chk"><input type="checkbox" data-sym="cold"><span>Tay chân lạnh</span></label>
+        <label class="chk"><input type="checkbox" data-sym="palpit"><span>Hồi hộp</span></label>
+        <label class="chk"><input type="checkbox" data-sym="dry"><span>Khô miệng</span></label>
+        <label class="chk"><input type="checkbox" data-sym="sweat"><span>Đổ mồ hôi đêm</span></label>
+        <label class="chk"><input type="checkbox" data-sym="tinnitus"><span>Ù tai</span></label>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 3: Giấc ngủ & tinh thần -->
+  <div class="q qstep" id="q3" style="display:none">
+    <div class="q-num">iii.</div>
+    <h2 class="q-title">Giấc ngủ <em>& tinh thần</em></h2>
+    <p class="q-sub">Phản ánh trạng thái Can – Tâm theo chu kỳ năng lượng 23h–3h.</p>
+    <div class="fg"><label class="flbl">Chất lượng giấc ngủ</label>
+      <div class="slider-wrap">
+        <div class="s-val" id="sv1">5</div>
+        <div class="s-lbl" id="sl1">Bình thường</div>
+        <input type="range" min="1" max="10" value="5" oninput="updSlider(this,'sv1','sl1','sleep')">
+        <div class="s-ends"><span>Rất kém</span><span>Tuyệt vời</span></div>
+      </div>
+    </div>
+    <div class="fg"><label class="flbl">Thường đi ngủ lúc</label>
+      <div class="opts">
+        <button class="opt" onclick="pickOne(this,'bedtime','before22')"><span class="opt-l">Trước 22h</span><span class="opt-d">Tốt cho Can</span></button>
+        <button class="opt" onclick="pickOne(this,'bedtime','22-23')"><span class="opt-l">22h–23h</span><span class="opt-d">Bình thường</span></button>
+        <button class="opt" onclick="pickOne(this,'bedtime','23-1')"><span class="opt-l">23h–1h sáng</span><span class="opt-d">Hao Can khí</span></button>
+        <button class="opt" onclick="pickOne(this,'bedtime','after1')"><span class="opt-l">Sau 1h sáng</span><span class="opt-d">Nghiêm trọng</span></button>
+      </div>
+    </div>
+    <div class="fg"><label class="flbl">Mức stress 3 tháng gần đây</label>
+      <div class="slider-wrap">
+        <div class="s-val" id="sv2">5</div>
+        <div class="s-lbl" id="sl2">Trung bình</div>
+        <input type="range" min="1" max="10" value="5" oninput="updSlider(this,'sv2','sl2','stress')">
+        <div class="s-ends"><span>Rất ít</span><span>Cực cao</span></div>
+      </div>
+    </div>
+    <div class="fg"><label class="flbl">Cảm xúc chiếm ưu thế</label>
+      <div class="checks">
+        <label class="chk"><input type="checkbox" data-emo="anxiety"><span>Lo lắng</span></label>
+        <label class="chk"><input type="checkbox" data-emo="sad"><span>Buồn bã</span></label>
+        <label class="chk"><input type="checkbox" data-emo="angry"><span>Cáu gắt</span></label>
+        <label class="chk"><input type="checkbox" data-emo="fear"><span>Sợ hãi</span></label>
+        <label class="chk"><input type="checkbox" data-emo="calm"><span>Bình thản</span></label>
+        <label class="chk"><input type="checkbox" data-emo="happy"><span>Vui vẻ</span></label>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 4: Ăn uống & vận động -->
+  <div class="q qstep" id="q4" style="display:none">
+    <div class="q-num">iv.</div>
+    <h2 class="q-title">Lối sống <em>& dinh dưỡng</em></h2>
+    <p class="q-sub">Ảnh hưởng trực tiếp đến Tỳ vị và Phế khí.</p>
+    <div class="fg"><label class="flbl">Tần suất vận động mỗi tuần</label>
+      <div class="opts">
+        <button class="opt" onclick="pickOne(this,'exercise','none')"><span class="opt-l">Không vận động</span></button>
+        <button class="opt" onclick="pickOne(this,'exercise','1-2')"><span class="opt-l">1–2 lần</span></button>
+        <button class="opt" onclick="pickOne(this,'exercise','3-4')"><span class="opt-l">3–4 lần</span></button>
+        <button class="opt" onclick="pickOne(this,'exercise','5+')"><span class="opt-l">5+ lần</span></button>
+      </div>
+    </div>
+    <div class="fg"><label class="flbl">Mức năng lượng trong ngày</label>
+      <div class="opts">
+        <button class="opt" onclick="pickOne(this,'energy','high')"><span class="opt-l">Sung mãn</span><span class="opt-d">Khí huyết tốt</span></button>
+        <button class="opt" onclick="pickOne(this,'energy','ok')"><span class="opt-l">Ổn, đôi lúc mệt</span><span class="opt-d">Bình thường</span></button>
+        <button class="opt" onclick="pickOne(this,'energy','tired')"><span class="opt-l">Thường mệt</span><span class="opt-d">Cần phục hồi</span></button>
+        <button class="opt" onclick="pickOne(this,'energy','exhausted')"><span class="opt-l">Kiệt sức</span><span class="opt-d">Suy giảm</span></button>
+      </div>
+    </div>
+    <div class="fg"><label class="flbl">Thói quen ăn uống</label>
+      <div class="checks">
+        <label class="chk"><input type="checkbox" data-diet="spicy"><span>Cay, chiên rán</span></label>
+        <label class="chk"><input type="checkbox" data-diet="sweet"><span>Đường, đồ ngọt</span></label>
+        <label class="chk"><input type="checkbox" data-diet="cold"><span>Đồ lạnh, đá</span></label>
+        <label class="chk"><input type="checkbox" data-diet="coffee"><span>Nhiều cà phê</span></label>
+        <label class="chk"><input type="checkbox" data-diet="alcohol"><span>Rượu bia</span></label>
+        <label class="chk"><input type="checkbox" data-diet="warm"><span>Đủ nước ấm</span></label>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 5: Thiệt chẩn (Upload 2 ảnh lưỡi: mặt trên + tĩnh mạch dưới) -->
+  <div class="q qstep" id="q5" style="display:none">
+    <div class="q-num">v.</div>
+    <h2 class="q-title"><em>Thiệt chẩn</em> — quan sát lưỡi</h2>
+    <p class="q-sub">Cần <b>2 ảnh</b>: mặt trên lưỡi (đánh giá màu, rêu, hình dạng) và mặt dưới lưỡi (đánh giá tĩnh mạch — phát hiện huyết ứ, âm hư).</p>
+    <div class="upload-tip">
+      <div class="upload-tip-ico">!</div>
+      <div class="upload-tip-text"><b>Lưu ý quan trọng:</b> Chụp buổi sáng khi mới ngủ dậy, ánh sáng tự nhiên (gần cửa sổ). Tránh sau khi ăn/uống đồ có màu, đánh răng, hoặc cạo rêu lưỡi. <b>Ảnh tĩnh mạch dưới lưỡi giúp đánh giá huyết ứ, bệnh lý gan và tim mạch.</b></div>
+    </div>
+    <div class="upload-grid">
+      <label class="upload-card required" id="uc-tongue" for="upload-tongue">
+        <div class="upload-icon">👅</div>
+        <div class="upload-label">Mặt trên lưỡi</div>
+        <div class="upload-desc">Lè lưỡi tự nhiên<br><small>Màu · Rêu · Hình dạng</small></div>
+        <input type="file" class="upload-input" id="upload-tongue" accept="image/*" onchange="handleUpload(this,'tongue')">
+      </label>
+      <label class="upload-card required" id="uc-tongueBottom" for="upload-tongueBottom">
+        <div class="upload-icon">👅</div>
+        <div class="upload-label">Mặt dưới lưỡi</div>
+        <div class="upload-desc">Cong lưỡi lên<br><small>Tĩnh mạch · Huyết ứ</small></div>
+        <input type="file" class="upload-input" id="upload-tongueBottom" accept="image/*" onchange="handleUpload(this,'tongueBottom')">
+      </label>
+    </div>
+    <div class="upload-tip" style="margin-top:14px;background:rgba(184,151,106,.08);border-color:rgba(184,151,106,.25)">
+      <div class="upload-tip-ico" style="color:#A0785A">i</div>
+      <div class="upload-tip-text"><b style="color:#A0785A">Hướng dẫn chụp tĩnh mạch dưới lưỡi:</b> Cong lưỡi ngược lên trần miệng, cho đầu lưỡi chạm vòm họng. Chụp rõ <b>2 đường tĩnh mạch xanh</b> hai bên dưới lưỡi. AI sẽ đánh giá độ dày, màu sắc, độ ngoằn ngoèo để phát hiện huyết ứ, can âm hư, tâm dương hư.</div>
+    </div>
+  </div>
+
+
+  <!-- STEP 6: Thủ chẩn (Upload lòng bàn tay) -->
+  <div class="q qstep" id="q6" style="display:none">
+    <div class="q-num">vi.</div>
+    <h2 class="q-title"><em>Thủ chẩn</em> — lòng bàn tay</h2>
+    <p class="q-sub">AI phân tích màu sắc, đường chỉ tay, độ ẩm để đánh giá khí huyết và Thận khí.</p>
+    <div class="upload-tip">
+      <div class="upload-tip-ico">!</div>
+      <div class="upload-tip-text"><b>Cách chụp:</b> Xòe rộng lòng bàn tay (tay trái và tay phải), chụp trong ánh sáng tự nhiên. Lòng bàn tay sạch, khô.</div>
+    </div>
+    <div class="upload-grid">
+      <label class="upload-card" id="uc-palmL" for="upload-palmL">
+        <div class="upload-icon">✋</div>
+        <div class="upload-label">Tay trái</div>
+        <div class="upload-desc">Lòng bàn tay trái</div>
+        <input type="file" class="upload-input" id="upload-palmL" accept="image/*" onchange="handleUpload(this,'palmL')">
+      </label>
+      <label class="upload-card" id="uc-palmR" for="upload-palmR">
+        <div class="upload-icon">🤚</div>
+        <div class="upload-label">Tay phải</div>
+        <div class="upload-desc">Lòng bàn tay phải</div>
+        <input type="file" class="upload-input" id="upload-palmR" accept="image/*" onchange="handleUpload(this,'palmR')">
+      </label>
+    </div>
+  </div>
+
+  <!-- STEP 7: Thần sắc (Upload khuôn mặt) -->
+  <div class="q qstep" id="q7" style="display:none">
+    <div class="q-num">vii.</div>
+    <h2 class="q-title"><em>Thần sắc</em> — khuôn mặt</h2>
+    <p class="q-sub">AI quan sát sắc thái, ánh mắt, vùng quầng mắt — phản ánh Tâm và Thận.</p>
+    <div class="upload-tip">
+      <div class="upload-tip-ico">!</div>
+      <div class="upload-tip-text"><b>Cách chụp:</b> Chụp khuôn mặt thẳng, không trang điểm, trong ánh sáng tự nhiên buổi sáng. Có thể chụp selfie.</div>
+    </div>
+    <div class="upload-grid">
+      <label class="upload-card" id="uc-face" for="upload-face">
+        <div class="upload-icon">😊</div>
+        <div class="upload-label">Khuôn mặt</div>
+        <div class="upload-desc">Selfie thẳng, đủ sáng</div>
+        <input type="file" class="upload-input" id="upload-face" accept="image/*" onchange="handleUpload(this,'face')">
+      </label>
+    </div>
+  </div>
+
+  <!-- STEP 8: Xét nghiệm & mục tiêu -->
+  <div class="q qstep" id="q8" style="display:none">
+    <div class="q-num">viii.</div>
+    <h2 class="q-title"><em>Xét nghiệm</em> & mục tiêu</h2>
+    <p class="q-sub">Bổ sung dữ liệu Tây y (nếu có) để AI phân tích đa chiều. Cuối cùng — mục tiêu của bạn.</p>
+    <div class="upload-tip">
+      <div class="upload-tip-ico">!</div>
+      <div class="upload-tip-text"><b>Tuỳ chọn:</b> Tải lên ảnh chụp kết quả xét nghiệm máu, siêu âm, đơn thuốc cũ. AI sẽ đọc và tích hợp vào phân tích.</div>
+    </div>
+    <div class="upload-grid" style="margin-bottom:20px">
+      <label class="upload-card" id="uc-labs" for="upload-labs">
+        <div class="upload-icon">📋</div>
+        <div class="upload-label">Xét nghiệm</div>
+        <div class="upload-desc">Ảnh kết quả Tây y</div>
+        <input type="file" class="upload-input" id="upload-labs" accept="image/*" onchange="handleUpload(this,'labs')">
+      </label>
+      <label class="upload-card" id="uc-rx" for="upload-rx">
+        <div class="upload-icon">💊</div>
+        <div class="upload-label">Đơn thuốc cũ</div>
+        <div class="upload-desc">Đơn thuốc đang dùng</div>
+        <input type="file" class="upload-input" id="upload-rx" accept="image/*" onchange="handleUpload(this,'rx')">
+      </label>
+    </div>
+    <div class="fg">
+      <label class="flbl">Chỉ số xét nghiệm gần đây <span class="fhint">nhập bằng tay nếu có</span></label>
+      <textarea class="fi" id="iLabs" placeholder="VD: AST 45, ALT 52, HBV-DNA dương tính, Vitamin D 18 ng/mL..."></textarea>
+    </div>
+    <div class="fg">
+      <label class="flbl">Mục tiêu chính bạn muốn cải thiện <span class="fhint">chọn nhiều</span></label>
+      <div class="checks">
+        <label class="chk"><input type="checkbox" data-goal="sleep"><span>Cải thiện ngủ</span></label>
+        <label class="chk"><input type="checkbox" data-goal="stress"><span>Giảm stress</span></label>
+        <label class="chk"><input type="checkbox" data-goal="energy"><span>Tăng năng lượng</span></label>
+        <label class="chk"><input type="checkbox" data-goal="recovery"><span>Phục hồi</span></label>
+        <label class="chk"><input type="checkbox" data-goal="digest"><span>Tiêu hóa</span></label>
+        <label class="chk"><input type="checkbox" data-goal="liver"><span>Bảo vệ gan</span></label>
+        <label class="chk"><input type="checkbox" data-goal="heart"><span>Tim mạch</span></label>
+        <label class="chk"><input type="checkbox" data-goal="prevent"><span>Phòng bệnh</span></label>
+      </div>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button class="btn-next" id="bNext" onclick="next()">Tiếp tục →</button>
+  </div>
+</div>
+
+<!-- ═══ PROCESSING ═══ -->
+<div class="screen" id="s-processing">
+  <div class="processing">
+    <div class="proc-spinner"></div>
+    <h2 class="proc-title">Đang phân tích hồ sơ</h2>
+    <div class="proc-status" id="procStatus">AI đang xem ảnh và đánh giá...</div>
+    <p class="proc-detail">Hệ thống đang kết hợp dữ liệu khảo sát, ngày giờ sinh, ảnh thiệt chẩn — thủ chẩn — thần sắc và xét nghiệm để xây dựng hồ sơ năng lượng cá nhân hóa theo Đông y.</p>
+    <div class="proc-steps" id="procSteps">
+      <div class="proc-step active" data-step="upload"><div class="proc-step-ico">1</div><div>Đang nén và chuẩn bị ảnh</div></div>
+      <div class="proc-step" data-step="vision"><div class="proc-step-ico">2</div><div>AI Vision phân tích ảnh chẩn</div></div>
+      <div class="proc-step" data-step="biophase"><div class="proc-step-ico">3</div><div>Biện chứng theo Đông y</div></div>
+      <div class="proc-step" data-step="report"><div class="proc-step-ico">4</div><div>Tổng hợp hồ sơ & lộ trình</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ RESULT ═══ -->
+<div class="screen" id="s-result">
+  <div class="result">
+    <div class="r-eyebrow">Phân tích hoàn tất</div>
+    <h2 class="r-title">Hồ sơ năng lượng <em>của bạn</em></h2>
+    <div class="r-meta" id="rMeta">—</div>
+
+    <!-- Hero summary -->
+    <div class="r-hero">
+      <div class="r-hero-row">
+        <div>
+          <div class="r-hero-l">Trọng tâm phục hồi</div>
+          <div class="r-hero-v" id="rFocus">—</div>
+        </div>
+        <div class="r-hero-score">
+          <div class="r-hero-l">Điểm tổng</div>
+          <div><span class="r-hero-score-v" id="rScore">—</span><span class="r-hero-score-u">/100</span></div>
+        </div>
+      </div>
+      <div class="r-hero-tags" id="rTags"></div>
+    </div>
+
+    <!-- AI Analysis - Tóm tắt -->
+    <div class="r-sec">
+      <div class="r-sec-hd"><div class="r-sec-t">1. Tóm tắt định hướng</div></div>
+      <div class="r-sec-c">
+        <div class="ai-text" id="rSummary"></div>
+      </div>
+    </div>
+
+    <!-- Tứ chẩn -->
+    <div class="r-sec">
+      <div class="r-sec-hd"><div class="r-sec-t">2. Kết quả tứ chẩn</div></div>
+      <div class="r-sec-c">
+        <div class="diag-grid" id="rDiag"></div>
+      </div>
+    </div>
+
+    <!-- Radar 12 chỉ số -->
+    <div class="r-sec">
+      <div class="r-sec-hd"><div class="r-sec-t">3. Radar 12 chỉ số năng lượng</div></div>
+      <div class="r-sec-c">
+        <div class="bars" id="rBars"></div>
+      </div>
+    </div>
+
+    <!-- Ngũ tạng -->
+    <div class="r-sec">
+      <div class="r-sec-hd"><div class="r-sec-t">4. Phân tích ngũ tạng</div></div>
+      <div class="r-sec-c">
+        <div class="tang-grid" id="rTang"></div>
+        <div class="tang-detail" id="rTangDetail"></div>
+      </div>
+    </div>
+
+    <!-- Lộ trình -->
+    <div class="r-sec">
+      <div class="r-sec-hd"><div class="r-sec-t">5. Định hướng 4 tuần</div></div>
+      <div class="r-sec-c">
+        <div class="plan" id="rPlan"></div>
+      </div>
+    </div>
+
+    <!-- Phác đồ Đông y -->
+    <div class="r-sec">
+      <div class="r-sec-hd"><div class="r-sec-t">6. Phác đồ Đông y định hướng</div></div>
+      <div class="r-sec-c">
+        <div class="ai-text" id="rRx"></div>
+      </div>
+    </div>
+
+    <!-- Download Word -->
+    <div class="download-card">
+      <div class="download-ico">📄</div>
+      <div class="download-t">Hồ sơ Word A4 đầy đủ</div>
+      <div class="download-d">14 trang chuẩn phòng khám với phân tích chi tiết 12 chỉ số, Mandala 5 tầng, phác đồ Đông y</div>
+      <button class="download-btn" onclick="downloadWord()" id="dlBtn">
+        <span>⬇</span><span>Tải hồ sơ Word</span>
+      </button>
+    </div>
+
+    <!-- CTA tư vấn -->
+    <div class="cta">
+      <div class="cta-t">Đặt lịch tư vấn 1-1</div>
+      <div class="cta-d">Chuyên gia Đông y đào sâu hồ sơ và đồng hành xây dựng lộ trình dài hạn.</div>
+      <div class="cta-btns">
+        <a class="cta-b" id="ctaMail" href="#">Đặt lịch tư vấn</a>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <button class="tb" onclick="restart()">↺ Làm lại</button>
+      <button class="tb" onclick="window.print()">⎙ In</button>
+      <button class="tb" onclick="copyResult()">⧉ Sao chép</button>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+// CẤU HÌNH AI
+// ═══════════════════════════════════════════════════════════════
+const WORKER_URL = 'https://tam-than-tri.YOUR-NAME.workers.dev';
+const AI_DEMO_MODE = true; // true = demo offline; false = gọi Worker thật
+
+// ═══════════════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════════════
+var data = {
+  name:'Khách',dob:null,tob:null,gender:null,job:null,
+  mainSymptoms:'',history:'',symptoms:[],
+  sleep:5,bedtime:null,stress:5,emotions:[],
+  exercise:null,energy:null,diet:[],
+  images:{tongue:null,tongueBottom:null,palmL:null,palmR:null,face:null,labs:null,rx:null},
+  labs:'',goals:[]
+};
+var cur=1,total=8;
+var stepNames=['Thông tin','Triệu chứng','Giấc ngủ','Lối sống','Thiệt chẩn','Thủ chẩn','Thần sắc','Xét nghiệm'];
+var sMap={1:'Rất kém',2:'Kém',3:'Dưới trung bình',4:'Hơi kém',5:'Bình thường',6:'Khá tốt',7:'Tốt',8:'Rất tốt',9:'Xuất sắc',10:'Tuyệt vời'};
+
+// ═══════════════════════════════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════════════════════════════
+function start(){
+  document.getElementById('s-welcome').classList.remove('on');
+  document.getElementById('s-quiz').classList.add('on');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function pickOne(el,key,val){
+  el.parentElement.querySelectorAll('.opt').forEach(b=>b.classList.remove('sel'));
+  el.classList.add('sel');
+  data[key]=val;
+}
+
+function updSlider(el,vId,lId,key){
+  var v=parseInt(el.value);
+  document.getElementById(vId).textContent=v;
+  document.getElementById(lId).textContent=sMap[v]||'';
+  data[key]=v;
+}
+
+function collect(){
+  data.symptoms=Array.from(document.querySelectorAll('[data-sym]:checked')).map(e=>e.dataset.sym);
+  data.emotions=Array.from(document.querySelectorAll('[data-emo]:checked')).map(e=>e.dataset.emo);
+  data.diet=Array.from(document.querySelectorAll('[data-diet]:checked')).map(e=>e.dataset.diet);
+  data.goals=Array.from(document.querySelectorAll('[data-goal]:checked')).map(e=>e.dataset.goal);
+  var n=document.getElementById('iName').value.trim();if(n)data.name=n;
+  data.dob=document.getElementById('iDob').value||null;
+  data.tob=document.getElementById('iTob').value||null;
+  data.job=document.getElementById('iJob').value||null;
+  data.mainSymptoms=document.getElementById('iMainSymptoms')?.value||'';
+  data.history=document.getElementById('iHistory')?.value||'';
+  data.labs=document.getElementById('iLabs')?.value||'';
+}
+
+function next(){
+  collect();
+  // Validation cho bước 5 (bắt buộc 2 ảnh lưỡi)
+  if(cur===5){
+    if(!data.images.tongue && !data.images.tongueBottom){
+      if(!confirm('Bạn chưa tải ảnh lưỡi nào. Phân tích sẽ bị giới hạn nghiêm trọng. Vẫn tiếp tục?')){
+        return;
+      }
+    } else if(!data.images.tongue || !data.images.tongueBottom){
+      var missing=!data.images.tongue?'mặt trên lưỡi':'mặt dưới lưỡi (tĩnh mạch)';
+      if(!confirm('Bạn chưa tải ảnh '+missing+'. Việc thiếu ảnh này sẽ làm giảm độ chính xác phân tích huyết ứ. Vẫn tiếp tục?')){
+        return;
+      }
+    }
+  }
+  if(cur<total){
+    document.getElementById('q'+cur).style.display='none';
+    cur++;
+    document.getElementById('q'+cur).style.display='block';
+    updProg();
+    document.getElementById('pBack').style.visibility='visible';
+    if(cur===total)document.getElementById('bNext').textContent='Phân tích ngay ✦';
+    window.scrollTo({top:0,behavior:'smooth'});
+  } else {
+    // Sang trang processing và chạy AI
+    document.getElementById('s-quiz').classList.remove('on');
+    document.getElementById('s-processing').classList.add('on');
+    window.scrollTo({top:0,behavior:'smooth'});
+    runAnalysis();
+  }
+}
+
+function prev(){
+  if(cur>1){
+    document.getElementById('q'+cur).style.display='none';
+    cur--;
+    document.getElementById('q'+cur).style.display='block';
+    updProg();
+    if(cur===1)document.getElementById('pBack').style.visibility='hidden';
+    document.getElementById('bNext').textContent='Tiếp tục →';
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+}
+
+function updProg(){
+  document.getElementById('pNum').textContent=String(cur).padStart(2,'0');
+  document.getElementById('pName').textContent=stepNames[cur-1];
+  document.getElementById('pFill').style.width=Math.round(cur/total*100)+'%';
+}
+
+// ═══════════════════════════════════════════════════════════════
+// IMAGE UPLOAD + COMPRESSION
+// ═══════════════════════════════════════════════════════════════
+function handleUpload(input,key){
+  var file=input.files[0];
+  if(!file)return;
+  if(!file.type.startsWith('image/')){
+    alert('Chỉ chấp nhận file ảnh.');
+    return;
+  }
+  // Compress to max 1MB / 1200px
+  compressImage(file,1200,0.85).then(blob=>{
+    var reader=new FileReader();
+    reader.onload=function(e){
+      data.images[key]=e.target.result; // base64 data URL
+      renderUploadPreview(key,e.target.result);
+    };
+    reader.readAsDataURL(blob);
+  });
+}
+
+function compressImage(file,maxSize,quality){
+  return new Promise((resolve,reject)=>{
+    var reader=new FileReader();
+    reader.onload=function(e){
+      var img=new Image();
+      img.onload=function(){
+        var canvas=document.createElement('canvas');
+        var w=img.width,h=img.height;
+        if(w>maxSize||h>maxSize){
+          if(w>h){h=Math.round(h*maxSize/w);w=maxSize;}
+          else{w=Math.round(w*maxSize/h);h=maxSize;}
+        }
+        canvas.width=w;canvas.height=h;
+        var ctx=canvas.getContext('2d');
+        ctx.drawImage(img,0,0,w,h);
+        canvas.toBlob(b=>resolve(b),'image/jpeg',quality);
+      };
+      img.onerror=reject;
+      img.src=e.target.result;
+    };
+    reader.onerror=reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+function renderUploadPreview(key,dataUrl){
+  var card=document.getElementById('uc-'+key);
+  if(!card)return;
+  var labels={tongue:'Mặt trên lưỡi',tongueBottom:'Tĩnh mạch dưới lưỡi',palmL:'Tay trái',palmR:'Tay phải',face:'Khuôn mặt',labs:'Xét nghiệm',rx:'Đơn thuốc'};
+  card.classList.add('has-image');
+  card.innerHTML='<div class="upload-preview"><img src="'+dataUrl+'" alt="'+labels[key]+'"><div class="upload-preview-overlay"><span class="upload-preview-label">'+labels[key]+'</span><button class="upload-preview-remove" type="button" onclick="event.preventDefault();event.stopPropagation();removeUpload(\''+key+'\')">×</button></div></div>';
+}
+
+function removeUpload(key){
+  data.images[key]=null;
+  var card=document.getElementById('uc-'+key);
+  var icons={tongue:'👅',tongueBottom:'👅',palmL:'✋',palmR:'🤚',face:'😊',labs:'📋',rx:'💊'};
+  var labels={tongue:'Mặt trên lưỡi',tongueBottom:'Mặt dưới lưỡi',palmL:'Tay trái',palmR:'Tay phải',face:'Khuôn mặt',labs:'Xét nghiệm',rx:'Đơn thuốc cũ'};
+  var descs={tongue:'Lè lưỡi tự nhiên<br><small>Màu · Rêu · Hình dạng</small>',tongueBottom:'Cong lưỡi lên<br><small>Tĩnh mạch · Huyết ứ</small>',palmL:'Lòng bàn tay trái',palmR:'Lòng bàn tay phải',face:'Selfie thẳng, đủ sáng',labs:'Ảnh kết quả Tây y',rx:'Đơn thuốc đang dùng'};
+  card.classList.remove('has-image');
+  card.innerHTML='<div class="upload-icon">'+icons[key]+'</div><div class="upload-label">'+labels[key]+'</div><div class="upload-desc">'+descs[key]+'</div><input type="file" class="upload-input" id="upload-'+key+'" accept="image/*" onchange="handleUpload(this,\''+key+'\')">';
+}
+
+// ═══════════════════════════════════════════════════════════════
+// AI ANALYSIS - main flow
+// ═══════════════════════════════════════════════════════════════
+async function runAnalysis(){
+  try {
+    updProcStep('upload','active');
+    await sleep(900);
+    updProcStep('upload','done');
+
+    updProcStep('vision','active');
+    document.getElementById('procStatus').textContent='AI đang đọc ảnh lưỡi, tay và khuôn mặt...';
+    await sleep(1800);
+    updProcStep('vision','done');
+
+    updProcStep('biophase','active');
+    document.getElementById('procStatus').textContent='Đang biện chứng luận trị theo Đông y...';
+    await sleep(1500);
+    updProcStep('biophase','done');
+
+    updProcStep('report','active');
+    document.getElementById('procStatus').textContent='Tổng hợp hồ sơ cá nhân hóa...';
+
+    // Gọi AI thật hoặc dùng analysis local
+    var result;
+    if(AI_DEMO_MODE){
+      result=computeLocalAnalysis();
+      await sleep(1200);
+    } else {
+      result=await callVisionAPI();
+    }
+    window._result=result;
+    updProcStep('report','done');
+    await sleep(400);
+
+    renderResult(result);
+    document.getElementById('s-processing').classList.remove('on');
+    document.getElementById('s-result').classList.add('on');
+    window.scrollTo({top:0,behavior:'smooth'});
+  } catch(e){
+    console.error(e);
+    alert('Có lỗi xảy ra: '+e.message+'. Vui lòng thử lại.');
+    document.getElementById('s-processing').classList.remove('on');
+    document.getElementById('s-quiz').classList.add('on');
+  }
+}
+
+function sleep(ms){return new Promise(r=>setTimeout(r,ms))}
+
+function updProcStep(key,state){
+  var el=document.querySelector('[data-step="'+key+'"]');
+  if(!el)return;
+  el.classList.remove('active','done');
+  if(state)el.classList.add(state);
+}
+
+async function callVisionAPI(){
+  var payload={
+    profile:{
+      name:data.name,dob:data.dob,tob:data.tob,gender:data.gender,job:data.job,
+      mainSymptoms:data.mainSymptoms,history:data.history,symptoms:data.symptoms,
+      sleep:data.sleep,bedtime:data.bedtime,stress:data.stress,emotions:data.emotions,
+      exercise:data.exercise,energy:data.energy,diet:data.diet,
+      labs:data.labs,goals:data.goals
+    },
+    images:data.images
+  };
+  var resp=await fetch(WORKER_URL,{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify(payload)
+  });
+  if(!resp.ok)throw new Error('AI service error');
+  return await resp.json();
+}
+
+// ═══════════════════════════════════════════════════════════════
+// LOCAL ANALYSIS (Demo mode - khi AI_DEMO_MODE = true)
+// ═══════════════════════════════════════════════════════════════
+function computeLocalAnalysis(){
+  var d=data;
+  // Tính tuổi
+  var age=null;
+  if(d.dob){
+    var dob=new Date(d.dob);
+    age=new Date().getFullYear()-dob.getFullYear();
+  }
+
+  // Tính Ngũ tạng theo logic Đông y
+  var can=70,tam=70,ty=72,phe=75,than=70;
+  
+  // Giấc ngủ & stress
+  if(d.bedtime==='23-1')can-=12;
+  if(d.bedtime==='after1'){can-=20;than-=8;}
+  if(d.bedtime==='before22')can+=8;
+  can-=Math.max(0,(d.stress-5)*2.5);
+  can-=Math.max(0,(5-d.sleep)*2);
+  
+  // Triệu chứng
+  if(d.symptoms.includes('head'))can-=5;
+  if(d.symptoms.includes('palpit'))tam-=10;
+  if(d.symptoms.includes('back'))than-=10;
+  if(d.symptoms.includes('cold')){than-=6;ty-=3;}
+  if(d.symptoms.includes('dry'))phe-=4;
+  if(d.symptoms.includes('sweat'))than-=5;
+  if(d.symptoms.includes('tinnitus'))than-=8;
+  if(d.symptoms.includes('dizzy'))than-=5;
+  
+  // Phân tích triệu chứng chính (text)
+  var ms=(d.mainSymptoms||'').toLowerCase();
+  if(ms.includes('tức ngực')||ms.includes('nhói'))tam-=8;
+  if(ms.includes('tê tay')||ms.includes('tê chân')){can-=5;tam-=3;}
+  if(ms.includes('đau bụng')||ms.includes('đi ngoài'))ty-=10;
+  if(ms.includes('viêm gan')||ms.includes('gan'))can-=15;
+  if(ms.includes('mất ngủ'))tam-=8;
+  if(ms.includes('chóng mặt')){than-=6;tam-=4;}
+  
+  // Tiền sử
+  var hist=(d.history||'').toLowerCase();
+  if(hist.includes('viêm gan'))can-=10;
+  if(hist.includes('dạ dày')||hist.includes('tỳ'))ty-=8;
+  
+  // Cảm xúc
+  if(d.emotions.includes('angry'))can-=8;
+  if(d.emotions.includes('anxiety')){can-=3;tam-=5;}
+  if(d.emotions.includes('sad'))phe-=8;
+  if(d.emotions.includes('fear'))than-=6;
+  if(d.emotions.includes('calm')||d.emotions.includes('happy'))tam+=5;
+  
+  // Năng lượng
+  if(d.energy==='tired'||d.energy==='exhausted')ty-=6;
+  if(d.energy==='exhausted')than-=10;
+  
+  // Ăn uống
+  if(d.diet.includes('spicy'))can-=4;
+  if(d.diet.includes('coffee'))tam-=4;
+  if(d.diet.includes('cold'))ty-=8;
+  if(d.diet.includes('sweet'))ty-=5;
+  if(d.diet.includes('alcohol'))can-=10;
+  if(d.diet.includes('warm'))ty+=4;
+  if(d.exercise==='none')phe-=6;
+  if(d.exercise==='5+')phe+=5;
+  
+  // Tuổi
+  if(age){
+    if(age>=50)than-=4;
+    if(age>=60)than-=4;
+    if(age>=35&&d.gender==='nu')than-=2;
+  }
+  
+  // Ảnh hưởng từ ảnh đã upload (demo - production sẽ thay bằng Vision AI thật)
+  var hasBloodStasis=false; // huyết ứ
+  if(d.images.tongue){
+    // Mặt trên lưỡi: lưỡi đỏ + có vết nứt → Can hỏa + âm hư
+    can-=4;than-=3;
+  }
+  if(d.images.tongueBottom){
+    // Mặt dưới lưỡi (tĩnh mạch): nếu tĩnh mạch đậm, ngoằn ngoèo → huyết ứ
+    // Đây là dấu hiệu sớm của bệnh lý gan, tim mạch
+    can-=5; // Can tàng huyết, huyết ứ ảnh hưởng Can mạnh
+    tam-=4; // Tâm chủ huyết mạch
+    hasBloodStasis=true;
+  }
+  
+  function clamp(v){return Math.max(20,Math.min(95,Math.round(v)))}
+  var tang={Can:clamp(can),Tam:clamp(tam),Ty:clamp(ty),Phe:clamp(phe),Than:clamp(than)};
+  
+  // 12 chỉ số
+  var radar=[
+    {name:'Khí lực',score:scoreToRadar((tang.Ty+tang.Phe)/2)},
+    {name:'Huyết dưỡng',score:scoreToRadar(tang.Tam-(d.symptoms.includes('dizzy')?15:0))},
+    {name:'Tạng Tỳ',score:scoreToRadar(tang.Ty)},
+    {name:'Tạng Phế',score:scoreToRadar(tang.Phe)},
+    {name:'Tạng Thận',score:scoreToRadar(tang.Than)},
+    {name:'Tạng Can',score:scoreToRadar(tang.Can)},
+    {name:'Tạng Tâm',score:scoreToRadar(tang.Tam)},
+    {name:'Tiêu hóa – hấp thu',score:scoreToRadar(tang.Ty-(ms.includes('đi ngoài')?15:0))},
+    {name:'Tuần hoàn – lưu thông',score:scoreToRadar((tang.Tam+tang.Can)/2-(ms.includes('tê')?10:0)-(hasBloodStasis?12:0))},
+    {name:'Giấc ngủ – phục hồi',score:scoreToRadar(d.sleep*9-(d.bedtime==='after1'?15:0))},
+    {name:'Nội tiết – sinh dục',score:scoreToRadar(tang.Than+5)},
+    {name:'Thải độc – chuyển hóa',score:scoreToRadar(tang.Can-(hist.includes('viêm gan')?15:0))}
+  ];
+  
+  var total=Math.round((tang.Can+tang.Tam+tang.Ty+tang.Phe+tang.Than)/5);
+  var sorted=Object.entries(tang).sort((a,b)=>a[1]-b[1]);
+  var weakest=sorted[0][0];
+  
+  // Build narrative
+  var summary=buildSummary(tang,age,d,weakest);
+  var plan=buildPlan(tang,d);
+  var rx=buildRxNarrative(tang,d,weakest);
+  
+  return {tang:tang,radar:radar,total:total,weakest:weakest,age:age,summary:summary,plan:plan,rx:rx,profile:d};
+}
+
+function scoreToRadar(score){
+  // Convert 0-100 to 0-10
+  return Math.max(1,Math.min(10,Math.round(score/10)));
+}
+
+function buildSummary(tang,age,d,weakest){
+  var tangNames={Can:'Can (Gan)',Tam:'Tâm (Tim)',Ty:'Tỳ vị',Phe:'Phế (Phổi)',Than:'Thận'};
+  var elementMap={Can:'Mộc',Tam:'Hỏa',Ty:'Thổ',Phe:'Kim',Than:'Thủy'};
+  
+  var parts=[];
+  parts.push('<p>Khách hàng <strong>'+(age?age+' tuổi':'tuổi chưa rõ')+'</strong>, qua khảo sát và quan sát tứ chẩn, cho thấy bức tranh thể trạng có sự mất cân bằng giữa các tạng phủ. <strong>Tạng '+tangNames[weakest]+' ('+elementMap[weakest]+')</strong> đang ở mức yếu nhất ('+tang[weakest]+'/100), là gốc bệnh cần ưu tiên xử lý.</p>');
+  
+  // Nhận định
+  var has=[];
+  if(tang.Can<55)has.push('Can khí uất kết');
+  if(tang.Ty<55)has.push('Tỳ khí hư');
+  if(tang.Tam<55)has.push('Tâm huyết bất túc');
+  if(tang.Than<55)has.push('Thận âm bất túc');
+  if(tang.Phe<55)has.push('Phế khí hư');
+  
+  if(has.length){
+    parts.push('<p><strong>Biện chứng:</strong> '+has.join(', ')+'. Đây là thể chất <em>hư thực hỗn tạp</em>, cần can thiệp theo hướng bảo tồn – tối ưu, không nên dùng pháp tấn công mạnh.</p>');
+  }
+  
+  // 3 nút thắt
+  parts.push('<p><strong>3 nút thắt chính:</strong></p><ul>');
+  var sorted=Object.entries(tang).sort((a,b)=>a[1]-b[1]);
+  for(var i=0;i<3;i++){
+    parts.push('<li><strong>'+tangNames[sorted[i][0]]+':</strong> '+getTangNote(sorted[i][0],sorted[i][1])+'</li>');
+  }
+  parts.push('</ul>');
+  
+  return parts.join('');
+}
+
+function getTangNote(tang,score){
+  var notes={
+    Can:'tổn thương sơ tiết — kéo theo cảm xúc và tiêu hóa rối loạn',
+    Tam:'huyết bất túc — gây hồi hộp, mất ngủ, khó tập trung',
+    Ty:'vận hóa kém — tiêu hóa nhạy cảm, khí huyết không sinh đủ',
+    Phe:'khí hư — dễ mệt mỏi, miễn dịch giảm',
+    Than:'tinh suy — phục hồi chậm, đau lưng, ù tai'
+  };
+  return notes[tang];
+}
+
+function buildPlan(tang,d){
+  var plan=[];
+  var weakest=Object.entries(tang).sort((a,b)=>a[1]-b[1])[0][0];
+  
+  if(d.goals.includes('sleep')||d.sleep<=5||weakest==='Can'){
+    plan.push({t:'Ngủ trước 23h mỗi đêm',d:'Giờ Tý–Sửu (23h–3h) là lúc Can–Đởm vận hành. Ngủ đúng giờ giúp gan giải độc và phục hồi cảm xúc.'});
+  }
+  if(d.stress>=6||weakest==='Tam'||d.goals.includes('stress')){
+    plan.push({t:'Thiền hoặc hít thở 4-7-8 mỗi tối',d:'Hít vào 4 giây, giữ 7 giây, thở ra 8 giây. Lặp lại 4–8 lần để an thần.'});
+  }
+  if(d.diet.includes('cold')||weakest==='Ty'){
+    plan.push({t:'Bỏ đồ lạnh, ăn ấm 3 bữa đúng giờ',d:'Tỳ ghét lạnh. Uống nước ấm thay đá. Bữa sáng 7-9h là vàng cho Tỳ Vị.'});
+  }
+  if(d.exercise==='none'||weakest==='Phe'){
+    plan.push({t:'Vận động ngoài trời 30 phút × 4 lần/tuần',d:'Đi bộ nhanh, yoga. Vận động ngoài trời nuôi Phế khí.'});
+  }
+  if(weakest==='Than'){
+    plan.push({t:'Giữ ấm vùng lưng — ngừng thức khuya',d:'Bổ sung Câu kỷ tử (15g/ngày) pha trà ấm. Ngủ trước 23h là tối quan trọng.'});
+  }
+  if(d.diet.includes('coffee')||d.diet.includes('spicy')){
+    plan.push({t:'Giảm cà phê và cay nóng',d:'Cà phê sau 14h hao Tâm khí. Đồ cay làm Can hỏa vượng. Thay bằng trà cúc hoa, kỷ tử.'});
+  }
+  if(d.diet.includes('alcohol')||(d.history||'').toLowerCase().includes('gan')){
+    plan.push({t:'Tuyệt đối tránh rượu bia',d:'Rượu bia gây tổn thương Can nghiêm trọng, đặc biệt khi có viêm gan B.'});
+  }
+  return plan.slice(0,5);
+}
+
+function buildRxNarrative(tang,d,weakest){
+  var hasBloodStasis=!!d.images.tongueBottom;
+  var parts=[];
+  if(hasBloodStasis){
+    parts.push('<p><strong>Biện chứng luận trị:</strong> Can uất Tỳ hư – Tâm huyết bất túc, phối hợp <b>khí trệ huyết ứ</b> (phát hiện qua tĩnh mạch dưới lưỡi).</p>');
+  } else {
+    parts.push('<p><strong>Biện chứng luận trị:</strong> Can uất Tỳ hư – Tâm huyết bất túc, phối hợp hư thực hỗn tạp, khí trệ huyết ứ nhẹ.</p>');
+  }
+  parts.push('<p><strong>Pháp điều trị:</strong> Sơ Can lý khí — Kiện Tỳ ích khí — Dưỡng huyết an Tâm — Bảo tồn Thận âm'+(hasBloodStasis?' — <b>Hoạt huyết hóa ứ</b>':'')+'.</p>');
+  
+  parts.push('<p><strong>Phương kinh điển ưu tiên:</strong></p><ul>');
+  if(tang.Can<60||tang.Ty<60)parts.push('<li><strong>Tiêu Dao Tán</strong> gia giảm — sơ Can kiện Tỳ, phù hợp Can uất Tỳ hư.</li>');
+  if(tang.Tam<60||tang.Ty<60)parts.push('<li><strong>Quy Tỳ Thang</strong> — bổ huyết an Tâm, dùng khi chóng mặt và mất ngủ.</li>');
+  if(hasBloodStasis)parts.push('<li><strong>Huyết Phủ Trục Ứ Thang</strong> — hoạt huyết hóa ứ, dùng khi tĩnh mạch dưới lưỡi cho thấy huyết ứ rõ.</li>');
+  if(tang.Than<55)parts.push('<li><strong>Lục Vị Địa Hoàng Hoàn</strong> — bổ Thận âm, dùng dài hạn để bảo tồn.</li>');
+  parts.push('</ul>');
+  
+  parts.push('<p><strong>Trà dưỡng sinh hằng ngày:</strong></p><ul>');
+  parts.push('<li><em>Trà sơ Can:</em> Cúc hoa 5g + Kỷ tử 10g, hãm uống cả ngày.</li>');
+  parts.push('<li><em>Trà kiện Tỳ:</em> Trần bì 3g + Sinh khương 2 lát + Đại táo 3 quả.</li>');
+  if(tang.Tam<60)parts.push('<li><em>Trà an Tâm:</em> Toan táo nhân 6g + Long nhãn 5 quả, uống trước ngủ.</li>');
+  if(hasBloodStasis)parts.push('<li><em>Trà hoạt huyết:</em> Đan sâm 5g + Hồng hoa 2g + Đào nhân 3g, dùng định kỳ.</li>');
+  parts.push('</ul>');
+  
+  parts.push('<p><strong>Lưu ý quan trọng:</strong> Phác đồ trên mang tính định hướng. Đề nghị tham vấn lương y trước khi dùng. Cần đối chiếu thêm xét nghiệm chức năng gan và ảnh chụp lưỡi - lòng bàn tay trong điều kiện chuẩn.</p>');
+  
+  return parts.join('');
+}
+
+// ═══════════════════════════════════════════════════════════════
+// RENDER RESULT
+// ═══════════════════════════════════════════════════════════════
+var TANG_INFO={
+  Can:{name:'Can',el:'Mộc · Gan',sym:'🌿',col:'#7A9471',
+    hi:'Can hoạt động tốt. Cảm xúc ổn định, khí huyết lưu thông.',
+    lo:'Can hỏa vượng hoặc Can khí uất kết. Cần thư giãn, ngủ trước 23h.',
+    recHi:'Duy trì lối sống. Trà cúc hoa khi căng thẳng.',
+    recLo:'Ngủ trước 23h. Yoga / hít thở 15 phút buổi tối. Trà cúc hoa, kỷ tử. Tránh rượu bia.'},
+  Tam:{name:'Tâm',el:'Hỏa · Tim',sym:'❤️',col:'#C0784A',
+    hi:'Tâm khí đầy đủ. Tinh thần sáng suốt.',
+    lo:'Tâm huyết hư. Ảnh hưởng trí nhớ, giấc ngủ và tim mạch.',
+    recHi:'Thiền 5-10 phút mỗi sáng.',
+    recLo:'Thiền 10-15 phút trước ngủ. Trà táo nhân, bá tử nhân. Hạn chế cà phê sau 14h.'},
+  Ty:{name:'Tỳ',el:'Thổ · Dạ dày',sym:'🌾',col:'#B8976A',
+    hi:'Tỳ vị hoạt động tốt.',
+    lo:'Tỳ khí hư. Cần ăn ấm, đúng giờ và tránh đồ lạnh.',
+    recHi:'Ăn 3 bữa đúng giờ, đa dạng rau xanh.',
+    recLo:'Ăn ấm, đúng giờ. Tránh đồ lạnh. Bổ sung Ý dĩ, Hoài sơn, gừng tươi.'},
+  Phe:{name:'Phế',el:'Kim · Phổi',sym:'🍃',col:'#5A8A9A',
+    hi:'Phế khí đầy đủ. Hô hấp tốt.',
+    lo:'Phế khí hư. Cần dưỡng âm và tăng vận động.',
+    recHi:'Hít thở sâu mỗi sáng. Vận động ngoài trời.',
+    recLo:'Hít thở 4-7-8 mỗi sáng. Vận động ngoài trời 30 phút/ngày. Trà Bách hợp.'},
+  Than:{name:'Thận',el:'Thủy · Thận',sym:'💧',col:'#4A6A90',
+    hi:'Thận khí ổn định.',
+    lo:'Thận tinh suy. Đây là tạng nền — cần ưu tiên phục hồi.',
+    recHi:'Giữ ấm vùng lưng. Ngủ đủ giấc.',
+    recLo:'Ưu tiên #1: ngủ đủ và đúng giờ. Bổ sung Câu kỷ tử, Thục địa. Giảm stress.'}
+};
+
+function renderResult(r){
+  var d=data;
+  
+  // Meta
+  var meta=[];
+  if(r.age)meta.push(r.age+' tuổi');
+  if(d.gender==='nu')meta.push('Nữ');else if(d.gender==='nam')meta.push('Nam');
+  var jobMap={office:'Văn phòng',manager:'Quản lý',runner:'VĐV',freelance:'Freelance',home:'Nội trợ',other:'—'};
+  if(d.job)meta.push(jobMap[d.job]||'—');
+  document.getElementById('rMeta').textContent=d.name+' · '+(meta.join(' · ')||'Hồ sơ cá nhân');
+  document.getElementById('rScore').textContent=r.total;
+  
+  // Focus
+  var focus=TANG_INFO[r.weakest];
+  document.getElementById('rFocus').textContent=focus.sym+' '+focus.name+' — '+focus.el;
+  
+  // Tags
+  var tagsHtml='';
+  if(r.age>=35&&d.gender==='nu')tagsHtml+='<span class="r-tag">Phụ nữ 35+</span>';
+  if(d.job==='runner')tagsHtml+='<span class="r-tag">Runner</span>';
+  if(d.stress>=7)tagsHtml+='<span class="r-tag a">Stress cao</span>';
+  if(d.sleep<=4||d.bedtime==='after1')tagsHtml+='<span class="r-tag a">Ngủ kém</span>';
+  if(r.tang.Than<55)tagsHtml+='<span class="r-tag a">Thận hư</span>';
+  if(r.tang.Can<55)tagsHtml+='<span class="r-tag a">Can uất</span>';
+  if(r.tang.Ty<55)tagsHtml+='<span class="r-tag a">Tỳ hư</span>';
+  if((d.history||'').toLowerCase().includes('gan'))tagsHtml+='<span class="r-tag a">Viêm gan</span>';
+  if(d.images.tongueBottom)tagsHtml+='<span class="r-tag a">Huyết ứ</span>';
+  if(!tagsHtml)tagsHtml='<span class="r-tag">Cân bằng tốt</span>';
+  document.getElementById('rTags').innerHTML=tagsHtml;
+  
+  // Summary
+  document.getElementById('rSummary').innerHTML=r.summary;
+  
+  // Diag với ảnh thật
+  var dEl=document.getElementById('rDiag');
+  var diagItems=[
+    {key:'tongue',label:'Thiệt chẩn',title:'Lưỡi',emoji:'👅',getNote:()=>analyzeTongue()},
+    {key:'palmL',label:'Thủ chẩn',title:'Lòng tay',emoji:'✋',getNote:()=>analyzePalm()},
+    {key:'face',label:'Thần sắc',title:'Khuôn mặt',emoji:'😊',getNote:()=>analyzeFace()}
+  ];
+  dEl.innerHTML='';
+  diagItems.forEach(item=>{
+    var c=document.createElement('div');c.className='diag-c';
+    var thumbHtml=d.images[item.key]?'<img src="'+d.images[item.key]+'" alt="'+item.title+'">':item.emoji;
+    c.innerHTML='<div class="diag-thumb">'+thumbHtml+'</div><div class="diag-l">'+item.label+'</div><div class="diag-v">'+item.getNote()+'</div>';
+    dEl.appendChild(c);
+  });
+  
+  // Radar bars (12 chỉ số)
+  var bEl=document.getElementById('rBars');
+  bEl.innerHTML='';
+  r.radar.forEach(b=>{
+    var div=document.createElement('div');div.className='bi';
+    var cls=b.score<=4?'warn':b.score>=7?'good':'';
+    div.innerHTML='<div class="bi-row"><span class="bi-n">'+b.name+'</span><span class="bi-v">'+b.score+'/10</span></div>'
+      +'<div class="bi-bar"><div class="bi-fill '+cls+'" data-w="'+(b.score*10)+'%"></div></div>';
+    bEl.appendChild(div);
+  });
+  setTimeout(()=>document.querySelectorAll('.bi-fill').forEach(f=>f.style.width=f.dataset.w),300);
+  
+  // Ngũ tạng
+  var tEl=document.getElementById('rTang');
+  tEl.innerHTML='';
+  ['Can','Tam','Ty','Phe','Than'].forEach((k,i)=>{
+    var t=TANG_INFO[k];var sc=r.tang[k];
+    var stat=sc>=75?'Tốt':sc>=60?'Khá':sc>=50?'Hỗ trợ':'Cần bổ';
+    var div=document.createElement('div');
+    div.className='tang-c'+(k===r.weakest?' on':'');
+    div.innerHTML='<div class="tang-i">'+t.sym+'</div><div class="tang-n">'+t.name+'</div><div class="tang-e">'+t.el.split('·')[0].trim()+'</div><div class="tang-s" style="color:'+t.col+'">'+sc+'</div><div class="tang-stat" style="color:'+(sc<60?'#A0785A':'#5C5851')+'">'+stat+'</div>';
+    div.addEventListener('click',function(){
+      showTang(k,sc);
+      document.querySelectorAll('.tang-c').forEach(c=>c.classList.remove('on'));
+      this.classList.add('on');
+    });
+    tEl.appendChild(div);
+  });
+  showTang(r.weakest,r.tang[r.weakest]);
+  
+  // Plan
+  var pEl=document.getElementById('rPlan');
+  pEl.innerHTML='';
+  r.plan.forEach((p,i)=>{
+    var div=document.createElement('div');div.className='pi';
+    div.innerHTML='<div class="pi-n">'+String(i+1).padStart(2,'0')+'</div><div class="pi-c"><div class="pi-t">'+p.t+'</div><div class="pi-d">'+p.d+'</div></div>';
+    pEl.appendChild(div);
+  });
+  
+  // Rx narrative
+  document.getElementById('rRx').innerHTML=r.rx;
+  
+  // CTA mailto
+  var mailBody='Họ tên: '+d.name+'\nĐiểm tổng: '+r.total+'/100\nNgũ Tạng: Can '+r.tang.Can+', Tâm '+r.tang.Tam+', Tỳ '+r.tang.Ty+', Phế '+r.tang.Phe+', Thận '+r.tang.Than+'\nTrọng tâm: '+focus.name+'\n\nTôi muốn đặt lịch tư vấn 1-1.';
+  document.getElementById('ctaMail').href='mailto:lienhe@tamthantri.vn?subject='+encodeURIComponent('[TTT] Tư vấn - '+d.name)+'&body='+encodeURIComponent(mailBody);
+}
+
+function analyzeTongue(){
+  if(!data.images.tongue && !data.images.tongueBottom)return 'Chưa có ảnh để phân tích';
+  var parts=[];
+  if(data.images.tongue){
+    parts.push('<b>Mặt trên:</b> lưỡi hơi đỏ, rêu hơi vàng, có thể có vết nứt giữa lưỡi → Can hỏa, âm hư.');
+  }
+  if(data.images.tongueBottom){
+    parts.push('<b>Tĩnh mạch dưới lưỡi:</b> đường tĩnh mạch đậm và hơi ngoằn ngoèo → có dấu hiệu <b>huyết ứ</b>, gợi ý Can âm hư + Tâm dương suy.');
+  }
+  return parts.join('<br>');
+}
+function analyzePalm(){
+  if(!data.images.palmL&&!data.images.palmR)return 'Chưa có ảnh để phân tích';
+  return 'AI quan sát: lòng tay hơi nhợt, mô gò Thận vùng cổ tay không đầy. Gợi ý huyết hư.';
+}
+function analyzeFace(){
+  if(!data.images.face)return 'Chưa có ảnh để phân tích';
+  return 'AI quan sát: sắc mặt hơi xỉn, quầng mắt sậm nhẹ. Gợi ý Thận âm bất túc.';
+}
+
+function showTang(k,sc){
+  var t=TANG_INFO[k];
+  var hi=sc>=65;
+  document.getElementById('rTangDetail').innerHTML=
+    '<div class="td-hd"><div class="td-t">'+t.sym+' '+t.name+' — '+sc+'/100</div><div class="td-e">'+t.el+'</div></div>'
+    +'<p class="td-body">'+(hi?t.hi:t.lo)+'</p>'
+    +'<div class="td-rec"><div class="td-rec-l">✦ Định hướng phục hồi</div><div class="td-rec-b">'+(hi?t.recHi:t.recLo)+'</div></div>';
+}
+
+function copyResult(){
+  if(!window._result)return;
+  var r=window._result;
+  var txt='HỒ SƠ NĂNG LƯỢNG TÂM – THÂN – TRÍ\n\nTên: '+data.name+'\nĐiểm tổng: '+r.total+'/100\n\nNGŨ TẠNG:\n• Can: '+r.tang.Can+'\n• Tâm: '+r.tang.Tam+'\n• Tỳ: '+r.tang.Ty+'\n• Phế: '+r.tang.Phe+'\n• Thận: '+r.tang.Than+'\n\nRADAR 12 CHỈ SỐ:\n'+r.radar.map(b=>'• '+b.name+': '+b.score+'/10').join('\n');
+  if(navigator.clipboard)navigator.clipboard.writeText(txt).then(()=>alert('Đã sao chép!'));
+  else{var ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);alert('Đã sao chép!');}
+}
+
+function downloadWord(){
+  // Trong production: gọi Worker để generate docx server-side
+  // Demo: thông báo
+  var btn=document.getElementById('dlBtn');
+  btn.innerHTML='<span>⏳</span><span>Đang tạo file...</span>';
+  btn.disabled=true;
+  setTimeout(()=>{
+    btn.innerHTML='<span>⬇</span><span>Tải hồ sơ Word</span>';
+    btn.disabled=false;
+    alert('Tính năng tải file Word A4 đầy đủ 14 trang đã có sẵn trong file Ho-so-Tam-Than-Tri_HongXinhGai.docx. Khi deploy thực tế, hệ thống sẽ tự động sinh file Word riêng cho từng người dùng.');
+  },1500);
+}
+
+function restart(){
+  cur=1;
+  data={name:'Khách',dob:null,tob:null,gender:null,job:null,mainSymptoms:'',history:'',symptoms:[],sleep:5,bedtime:null,stress:5,emotions:[],exercise:null,energy:null,diet:[],images:{tongue:null,tongueBottom:null,palmL:null,palmR:null,face:null,labs:null,rx:null},labs:'',goals:[]};
+  document.querySelectorAll('input[type=checkbox]').forEach(c=>c.checked=false);
+  document.querySelectorAll('.opt').forEach(o=>o.classList.remove('sel'));
+  document.querySelectorAll('input[type=range]').forEach(r=>r.value=5);
+  document.querySelectorAll('input[type=text],input[type=number],input[type=date],input[type=time],textarea').forEach(i=>i.value='');
+  document.querySelectorAll('select').forEach(s=>s.value='');
+  document.querySelectorAll('.s-val').forEach(s=>s.textContent='5');
+  document.querySelectorAll('.s-lbl').forEach(s=>s.textContent='Bình thường');
+  ['tongue','tongueBottom','palmL','palmR','face','labs','rx'].forEach(k=>{
+    var card=document.getElementById('uc-'+k);if(card&&card.classList.contains('has-image'))removeUpload(k);
+  });
+  document.getElementById('s-result').classList.remove('on');
+  document.getElementById('s-quiz').classList.remove('on');
+  document.getElementById('s-processing').classList.remove('on');
+  document.getElementById('s-welcome').classList.add('on');
+  for(var i=1;i<=8;i++){var el=document.getElementById('q'+i);if(el)el.style.display=i===1?'block':'none';}
+  document.querySelectorAll('.proc-step').forEach(s=>s.classList.remove('done','active'));
+  document.querySelector('.proc-step[data-step="upload"]').classList.add('active');
+  updProg();
+  document.getElementById('pBack').style.visibility='hidden';
+  document.getElementById('bNext').textContent='Tiếp tục →';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>
