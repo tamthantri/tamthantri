@@ -263,6 +263,50 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;background:var(--ink)
 
 .error-msg{background:rgba(192,64,64,.08);border:1px solid rgba(192,64,64,.3);border-radius:var(--r);padding:14px;font-size:13px;color:var(--error);margin-bottom:16px;line-height:1.5}
 
+/* CONSULTATION FORM */
+.consult-card{background:var(--ink);color:var(--bg);border-radius:var(--r-lg);padding:28px 24px;margin-bottom:20px;position:relative;overflow:hidden}
+.consult-card::before{content:'';position:absolute;top:-50px;right:-50px;width:200px;height:200px;background:radial-gradient(circle,rgba(184,151,106,.15),transparent 70%);border-radius:50%}
+.consult-eyebrow{font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;font-weight:600;position:relative}
+.consult-t{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:600;color:var(--bg);margin-bottom:8px;line-height:1.2;position:relative}
+.consult-t em{color:var(--gold);font-style:italic}
+.consult-d{font-size:13px;color:rgba(255,255,255,.7);line-height:1.6;margin-bottom:20px;position:relative}
+.consult-form{display:flex;flex-direction:column;gap:10px;position:relative}
+.consult-input{width:100%;padding:13px 16px;border:1px solid rgba(255,255,255,.15);border-radius:var(--r);background:rgba(255,255,255,.05);font-size:14px;color:var(--bg);outline:none;transition:all .2s;-webkit-appearance:none;font-family:inherit}
+.consult-input::placeholder{color:rgba(255,255,255,.4)}
+.consult-input:focus{border-color:var(--gold);background:rgba(255,255,255,.08)}
+.consult-submit{width:100%;background:var(--gold);color:var(--ink);border:none;padding:14px;border-radius:40px;font-size:14px;font-weight:600;cursor:pointer;transition:all .25s;margin-top:6px;letter-spacing:0.02em}
+.consult-submit:hover{background:#C9A574;transform:translateY(-1px)}
+.consult-submit:disabled{opacity:.6;cursor:not-allowed;transform:none}
+.consult-foot{font-size:11px;color:rgba(255,255,255,.4);text-align:center;margin-top:10px;line-height:1.5;position:relative}
+.consult-perks{display:flex;gap:12px;margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,.1);position:relative}
+.consult-perk{flex:1;text-align:center;font-size:10px;color:rgba(255,255,255,.5);line-height:1.4}
+.consult-perk-ico{font-size:16px;display:block;margin-bottom:3px}
+
+/* SUCCESS STATE */
+.consult-success{display:none;text-align:center;padding:20px 0;position:relative}
+.consult-success.on{display:block}
+.success-ico{font-size:48px;margin-bottom:12px;line-height:1}
+.success-t{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:var(--bg);margin-bottom:8px}
+.success-d{font-size:13px;color:rgba(255,255,255,.7);line-height:1.6;margin-bottom:14px}
+.success-d strong{color:var(--gold)}
+
+/* EXIT INTENT POPUP */
+.popup-overlay{display:none;position:fixed;inset:0;background:rgba(26,24,20,.6);z-index:1000;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);animation:fadein .3s ease}
+.popup-overlay.on{display:flex}
+.popup{background:var(--card);border-radius:var(--r-lg);padding:32px 28px;max-width:400px;width:100%;text-align:center;position:relative;animation:popup-in .35s cubic-bezier(.16,1,.3,1)}
+@keyframes popup-in{from{opacity:0;transform:scale(.92) translateY(20px)}to{opacity:1;transform:none}}
+.popup-close{position:absolute;top:14px;right:14px;width:30px;height:30px;border:none;background:transparent;font-size:22px;color:var(--ink3);cursor:pointer;line-height:1;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:background .2s}
+.popup-close:hover{background:var(--cream)}
+.popup-ico{font-size:42px;margin-bottom:14px;line-height:1}
+.popup-t{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:600;color:var(--ink);margin-bottom:10px;line-height:1.2}
+.popup-t em{color:var(--accent);font-style:italic}
+.popup-d{font-size:13px;color:var(--ink2);line-height:1.65;margin-bottom:22px;font-weight:400}
+.popup-d strong{color:var(--ink);font-weight:600}
+.popup-btn{width:100%;background:var(--ink);color:var(--bg);border:none;padding:14px;border-radius:40px;font-size:14px;font-weight:600;cursor:pointer;transition:all .25s;margin-bottom:10px}
+.popup-btn:hover{background:var(--accent)}
+.popup-skip{background:transparent;border:none;color:var(--ink3);font-size:12px;cursor:pointer;padding:8px;text-decoration:underline;font-family:inherit}
+.popup-skip:hover{color:var(--ink2)}
+
 @media(max-width:480px){
   .row2,.opts,.checks,.upload-grid{grid-template-columns:1fr 1fr}
   .w-features{grid-template-columns:1fr}
@@ -271,10 +315,12 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;background:var(--ink)
   .r-title{font-size:30px}
   .tang-i{font-size:20px}
   .tang-n{font-size:14px}
+  .consult-card{padding:22px 20px}
+  .consult-t{font-size:22px}
 }
 
 @media print{
-  .toolbar,.cta,.download-card{display:none}
+  .toolbar,.cta,.download-card,.consult-card,.popup-overlay{display:none}
   body{background:white}
 }
 </style>
@@ -693,12 +739,29 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;background:var(--ink)
       </button>
     </div>
 
-    <!-- CTA tư vấn -->
-    <div class="cta">
-      <div class="cta-t">Đặt lịch tư vấn 1-1</div>
-      <div class="cta-d">Chuyên gia Đông y đào sâu hồ sơ và đồng hành xây dựng lộ trình dài hạn.</div>
-      <div class="cta-btns">
-        <a class="cta-b" id="ctaMail" href="#">Đặt lịch tư vấn</a>
+    <!-- Consultation Form - Thu SĐT khách hàng -->
+    <div class="consult-card" id="consultCard">
+      <div class="consult-eyebrow">✦ Tư vấn cá nhân hóa</div>
+      <div class="consult-t">Nhận tư vấn <em>1-1 từ thầy</em></div>
+      <div class="consult-d">Để lại thông tin, thầy sẽ liên hệ qua điện thoại/Zalo trong vòng 24h để đào sâu hồ sơ của bạn — hoàn toàn miễn phí.</div>
+      <form class="consult-form" id="consultForm" onsubmit="submitConsult(event)">
+        <input type="text" class="consult-input" id="cfName" placeholder="Họ và tên của bạn" required maxlength="50">
+        <input type="tel" class="consult-input" id="cfPhone" placeholder="Số điện thoại / Zalo (VD: 0987654321)" required maxlength="15" pattern="[0-9 +]{9,15}">
+        <button type="submit" class="consult-submit" id="cfSubmit">📞 Đăng ký nhận tư vấn miễn phí</button>
+      </form>
+      <div class="consult-foot">Thông tin của bạn được bảo mật tuyệt đối · Chỉ thầy có quyền liên hệ</div>
+      <div class="consult-perks">
+        <div class="consult-perk"><span class="consult-perk-ico">🕐</span>Phản hồi<br>trong 24h</div>
+        <div class="consult-perk"><span class="consult-perk-ico">💚</span>Hoàn toàn<br>miễn phí</div>
+        <div class="consult-perk"><span class="consult-perk-ico">🔒</span>Bảo mật<br>thông tin</div>
+      </div>
+
+      <!-- Success state -->
+      <div class="consult-success" id="consultSuccess">
+        <div class="success-ico">🌿</div>
+        <div class="success-t">Cảm ơn bạn!</div>
+        <div class="success-d">Thầy đã nhận được thông tin và sẽ liên hệ với bạn <strong>trong vòng 24h tới</strong> qua số <strong id="successPhone"></strong>.</div>
+        <div class="consult-foot" style="margin-top:0">— Tâm Thân Trí · tamthantri.vn</div>
       </div>
     </div>
 
@@ -710,6 +773,18 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;background:var(--ink)
   </div>
 </div>
 
+<!-- EXIT INTENT POPUP -->
+<div class="popup-overlay" id="exitPopup">
+  <div class="popup">
+    <button class="popup-close" onclick="closeExitPopup()" aria-label="Đóng">×</button>
+    <div class="popup-ico">🌿</div>
+    <div class="popup-t">Trước khi <em>rời đi...</em></div>
+    <div class="popup-d">Hồ sơ năng lượng của bạn cho thấy <strong>các nút thắt cần được tư vấn sâu</strong>. Tư vấn 1-1 với thầy hoàn toàn miễn phí, chỉ mất 15 phút và có thể thay đổi sức khỏe của bạn.</div>
+    <button class="popup-btn" onclick="scrollToForm()">Để lại số điện thoại</button>
+    <button class="popup-skip" onclick="closeExitPopup()">Cảm ơn, để lúc khác</button>
+  </div>
+</div>
+
 </div>
 
 <script>
@@ -717,7 +792,14 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;background:var(--ink)
 // CẤU HÌNH AI
 // ═══════════════════════════════════════════════════════════════
 const WORKER_URL = 'https://tamthantri-ai.giaminhthaoduoc.workers.dev';
-const AI_DEMO_MODE = true; // true = dùng response giả; false = gọi WORKER_URL thật
+const AI_DEMO_MODE = true; // true = demo offline; false = gọi Worker thật
+
+// ═══════════════════════════════════════════════════════════════
+// CẤU HÌNH GOOGLE SHEETS (thu thập khách hàng)
+// ═══════════════════════════════════════════════════════════════
+// THẦY THAY URL APPS SCRIPT VÀO ĐÂY ↓
+const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbxsmkeWEht2c4_PLqee9ay_0Wpx36LYfD5CTohciPtu-RtY9rD5EYoCHrRAykJV3JH0pg/exec';
+// Ví dụ: 'https://script.google.com/macros/s/AKfycbxsmkeWEht.../exec'
 
 // ═══════════════════════════════════════════════════════════════
 // STATE
@@ -1357,9 +1439,186 @@ function downloadWord(){
   },1500);
 }
 
+// ═══════════════════════════════════════════════════════════════
+// THU SĐT KHÁCH HÀNG → GỬI VỀ GOOGLE SHEETS
+// ═══════════════════════════════════════════════════════════════
+var _consultSubmitted = false;
+var _exitPopupShown = false;
+
+function validatePhone(phone){
+  // Loại bỏ khoảng trắng và dấu +
+  var clean = phone.replace(/[\s\+]/g,'');
+  // SĐT VN: 9-11 số, bắt đầu 0 hoặc 84
+  return /^(0|84)[0-9]{8,10}$/.test(clean);
+}
+
+async function submitConsult(event){
+  event.preventDefault();
+  if(_consultSubmitted) return false;
+  
+  var name = document.getElementById('cfName').value.trim();
+  var phone = document.getElementById('cfPhone').value.trim();
+  var btn = document.getElementById('cfSubmit');
+  
+  // Validation
+  if(name.length < 2){
+    alert('Vui lòng nhập đầy đủ họ tên');
+    return false;
+  }
+  if(!validatePhone(phone)){
+    alert('Số điện thoại không đúng định dạng. Vui lòng nhập lại (VD: 0987654321)');
+    return false;
+  }
+  
+  // Disable button + show loading
+  btn.disabled = true;
+  btn.innerHTML = '⏳ Đang gửi...';
+  
+  try {
+    var r = window._result || {};
+    var d = data || {};
+    
+    // Tính tuổi
+    var age = null;
+    if(d.dob){
+      var dob = new Date(d.dob);
+      age = new Date().getFullYear() - dob.getFullYear();
+    }
+    
+    // Build payload gửi Apps Script
+    var payload = {
+      name: name,
+      phone: phone,
+      age: age || '',
+      gender: d.gender === 'nu' ? 'Nữ' : (d.gender === 'nam' ? 'Nam' : ''),
+      job: d.job || '',
+      symptoms: (d.mainSymptoms||'') + (d.history?' | Tiền sử: '+d.history:''),
+      totalScore: r.total || '',
+      can: r.tang ? r.tang.Can : '',
+      tam: r.tang ? r.tang.Tam : '',
+      ty: r.tang ? r.tang.Ty : '',
+      phe: r.tang ? r.tang.Phe : '',
+      than: r.tang ? r.tang.Than : '',
+      focus: r.weakest || '',
+      goals: (d.goals||[]).join(', '),
+      sleep: d.sleep || '',
+      stress: d.stress || ''
+    };
+    
+    // Gửi đến Apps Script
+    if(SHEETS_URL && SHEETS_URL !== 'PASTE_URL_APPS_SCRIPT_HERE'){
+      // Dùng no-cors để tránh CORS preflight (Apps Script không hỗ trợ OPTIONS tốt)
+      await fetch(SHEETS_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {'Content-Type': 'text/plain'},
+        body: JSON.stringify(payload)
+      });
+    } else {
+      console.warn('SHEETS_URL chưa được cấu hình');
+      await new Promise(r=>setTimeout(r,800));
+    }
+    
+    // Hiện success state
+    _consultSubmitted = true;
+    document.getElementById('successPhone').textContent = phone;
+    document.getElementById('consultForm').style.display = 'none';
+    document.querySelector('.consult-perks').style.display = 'none';
+    document.querySelector('.consult-card .consult-eyebrow').style.display = 'none';
+    document.querySelector('.consult-card .consult-t').style.display = 'none';
+    document.querySelector('.consult-card .consult-d').style.display = 'none';
+    document.querySelector('.consult-card .consult-foot').style.display = 'none';
+    document.getElementById('consultSuccess').classList.add('on');
+    
+    // Tắt popup nếu đang hiện
+    closeExitPopup();
+    
+  } catch(err){
+    console.error('Submit error:', err);
+    btn.disabled = false;
+    btn.innerHTML = '📞 Đăng ký nhận tư vấn miễn phí';
+    alert('Có lỗi xảy ra khi gửi thông tin. Vui lòng thử lại hoặc liên hệ trực tiếp qua email lienhe@tamthantri.vn');
+  }
+  return false;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// EXIT INTENT POPUP - hiện khi khách định rời trang
+// ═══════════════════════════════════════════════════════════════
+function setupExitIntent(){
+  // Desktop: phát hiện chuột rời lên trên trình duyệt
+  document.addEventListener('mouseleave', function(e){
+    if(e.clientY <= 0 && !_consultSubmitted && !_exitPopupShown){
+      // Chỉ hiện khi đang ở trang kết quả
+      if(document.getElementById('s-result').classList.contains('on')){
+        showExitPopup();
+      }
+    }
+  });
+  
+  // Mobile: hiện sau khi scroll xuống cuối + đợi 30s
+  var scrolledBottom = false;
+  window.addEventListener('scroll', function(){
+    if(_consultSubmitted || _exitPopupShown || scrolledBottom) return;
+    if(!document.getElementById('s-result').classList.contains('on')) return;
+    var scrollPos = window.innerHeight + window.scrollY;
+    if(scrollPos >= document.body.offsetHeight - 200){
+      scrolledBottom = true;
+      // Đợi 8 giây sau khi đã xem hết kết quả
+      setTimeout(function(){
+        if(!_consultSubmitted && !_exitPopupShown){
+          showExitPopup();
+        }
+      }, 8000);
+    }
+  });
+}
+
+function showExitPopup(){
+  if(_exitPopupShown || _consultSubmitted) return;
+  _exitPopupShown = true;
+  document.getElementById('exitPopup').classList.add('on');
+}
+
+function closeExitPopup(){
+  document.getElementById('exitPopup').classList.remove('on');
+}
+
+function scrollToForm(){
+  closeExitPopup();
+  var card = document.getElementById('consultCard');
+  if(card){
+    card.scrollIntoView({behavior:'smooth', block:'center'});
+    // Focus vào ô tên sau khi scroll
+    setTimeout(function(){
+      var nameInput = document.getElementById('cfName');
+      if(nameInput) nameInput.focus();
+    }, 600);
+  }
+}
+
+// Khởi tạo exit intent khi page load
+window.addEventListener('DOMContentLoaded', function(){
+  setupExitIntent();
+});
+
 function restart(){
   cur=1;
   data={name:'Khách',dob:null,tob:null,gender:null,job:null,mainSymptoms:'',history:'',symptoms:[],sleep:5,bedtime:null,stress:5,emotions:[],exercise:null,energy:null,diet:[],images:{tongue:null,tongueBottom:null,palmL:null,palmR:null,face:null,labs:null,rx:null},labs:'',goals:[]};
+  // Reset form thu SĐT
+  _consultSubmitted = false;
+  _exitPopupShown = false;
+  var cfName=document.getElementById('cfName');if(cfName)cfName.value='';
+  var cfPhone=document.getElementById('cfPhone');if(cfPhone)cfPhone.value='';
+  var cfSubmit=document.getElementById('cfSubmit');if(cfSubmit){cfSubmit.disabled=false;cfSubmit.innerHTML='📞 Đăng ký nhận tư vấn miễn phí';}
+  var cs=document.getElementById('consultSuccess');if(cs)cs.classList.remove('on');
+  var cf=document.getElementById('consultForm');if(cf)cf.style.display='';
+  var perks=document.querySelector('.consult-perks');if(perks)perks.style.display='';
+  var ebrow=document.querySelector('.consult-card .consult-eyebrow');if(ebrow)ebrow.style.display='';
+  var ct=document.querySelector('.consult-card .consult-t');if(ct)ct.style.display='';
+  var cd=document.querySelector('.consult-card .consult-d');if(cd)cd.style.display='';
+  var cfoot=document.querySelector('.consult-card .consult-foot');if(cfoot)cfoot.style.display='';
+  closeExitPopup();
   document.querySelectorAll('input[type=checkbox]').forEach(c=>c.checked=false);
   document.querySelectorAll('.opt').forEach(o=>o.classList.remove('sel'));
   document.querySelectorAll('input[type=range]').forEach(r=>r.value=5);
