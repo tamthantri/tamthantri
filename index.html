@@ -1384,9 +1384,7 @@ function renderResult(r){
   // Rx narrative
   document.getElementById('rRx').innerHTML=r.rx;
   
-  // CTA mailto
-  var mailBody='Họ tên: '+d.name+'\nĐiểm tổng: '+r.total+'/100\nNgũ Tạng: Can '+r.tang.Can+', Tâm '+r.tang.Tam+', Tỳ '+r.tang.Ty+', Phế '+r.tang.Phe+', Thận '+r.tang.Than+'\nTrọng tâm: '+focus.name+'\n\nTôi muốn đặt lịch tư vấn 1-1.';
-  document.getElementById('ctaMail').href='mailto:lienhe@tamthantri.vn?subject='+encodeURIComponent('[TTT] Tư vấn - '+d.name)+'&body='+encodeURIComponent(mailBody);
+  
 }
 
 function analyzeTongue(){
