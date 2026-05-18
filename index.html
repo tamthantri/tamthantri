@@ -20,21 +20,21 @@ html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
 body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;letter-spacing:-0.01em;min-height:100vh}
 .serif{font-family:'Cormorant Garamond',serif;letter-spacing:0}
 button,input,select,textarea{font-family:inherit;font-size:inherit;color:inherit;letter-spacing:inherit}
-
+ 
 .app{max-width:560px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;padding:0 20px}
-
+ 
 /* TOP BAR */
 .topbar{padding:24px 0;display:flex;justify-content:space-between;align-items:center}
 .brand{display:flex;align-items:center;gap:10px;text-decoration:none}
 .brand-mark{width:34px;height:34px;background:var(--ink);color:var(--bg);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:500}
 .brand-name{font-size:13px;font-weight:600;color:var(--ink);letter-spacing:0.08em}
 .brand-tag{font-size:10px;color:var(--ink3);letter-spacing:0.1em;text-transform:uppercase;background:var(--cream);padding:4px 10px;border-radius:40px}
-
+ 
 /* SCREENS */
 .screen{display:none;flex:1;flex-direction:column;animation:fadein .4s ease}
 .screen.on{display:flex}
 @keyframes fadein{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
-
+ 
 /* WELCOME */
 .welcome{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:40px 0 60px}
 .w-eyebrow{font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent2);margin-bottom:20px;font-weight:600}
@@ -48,14 +48,14 @@ button,input,select,textarea{font-family:inherit;font-size:inherit;color:inherit
 .btn-primary:hover{background:var(--accent);transform:translateY(-1px);box-shadow:0 8px 24px rgba(26,24,20,.15)}
 .btn-primary:disabled{background:var(--line2);cursor:not-allowed;transform:none}
 .w-foot{margin-top:16px;font-size:11px;color:var(--ink3);font-weight:400}
-
+ 
 .w-features{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:40px;max-width:480px;width:100%}
 .wf{background:var(--card);border:0.5px solid var(--line);border-radius:var(--r);padding:14px;text-align:left;display:flex;gap:12px;align-items:flex-start}
 .wf-ico{font-size:24px;flex-shrink:0;line-height:1}
 .wf-body{flex:1}
 .wf-l{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:2px}
 .wf-d{font-size:11px;color:var(--ink3);line-height:1.45;font-weight:400}
-
+ 
 /* PROGRESS */
 .progress{padding:20px 0 0;position:sticky;top:0;background:var(--bg);z-index:10}
 .p-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
@@ -65,26 +65,26 @@ button,input,select,textarea{font-family:inherit;font-size:inherit;color:inherit
 .p-back:hover{color:var(--ink)}
 .p-bar{height:2px;background:var(--line);border-radius:2px;overflow:hidden}
 .p-fill{height:100%;background:var(--ink);border-radius:2px;transition:width .5s cubic-bezier(.16,1,.3,1)}
-
+ 
 /* QUESTION */
 .q{padding:32px 0;flex:1}
 .q-num{font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--ink3);margin-bottom:6px;font-style:italic;letter-spacing:0.05em}
 .q-title{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:500;line-height:1.2;color:var(--ink);margin-bottom:10px;letter-spacing:-0.01em}
 .q-title em{color:var(--accent);font-style:italic}
 .q-sub{font-size:14px;color:var(--ink2);line-height:1.65;margin-bottom:28px;font-weight:300}
-
+ 
 .fg{margin-bottom:20px}
 .flbl{display:block;font-size:12px;font-weight:600;color:var(--ink2);margin-bottom:8px;letter-spacing:0.02em}
 .fhint{font-size:11px;color:var(--ink3);font-weight:400;margin-left:6px;font-style:italic}
-
+ 
 .fi{width:100%;padding:14px 16px;border:1px solid var(--line2);border-radius:var(--r);background:var(--card);font-size:14px;color:var(--ink);outline:none;transition:border-color .2s;-webkit-appearance:none;font-family:inherit}
 .fi:focus{border-color:var(--accent)}
 .fi::placeholder{color:var(--ink3)}
 select.fi{cursor:pointer;background-image:url("data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%239B948A' d='M6 8L0 0h12z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 16px center;padding-right:40px}
 textarea.fi{min-height:100px;resize:vertical;line-height:1.5}
-
+ 
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-
+ 
 /* UPLOAD CARDS */
 .upload-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .upload-card{background:var(--card);border:2px dashed var(--line2);border-radius:var(--r);padding:18px 16px;text-align:center;cursor:pointer;transition:all .25s;position:relative;min-height:160px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px}
@@ -101,12 +101,12 @@ textarea.fi{min-height:100px;resize:vertical;line-height:1.5}
 .upload-preview-label{color:#fff;font-size:11px;font-weight:600}
 .upload-preview-remove{background:rgba(255,255,255,.95);border:none;border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;color:var(--ink);line-height:1}
 .upload-input{display:none}
-
+ 
 .upload-tip{display:flex;gap:10px;align-items:flex-start;background:rgba(122,148,113,.08);border:1px solid rgba(122,148,113,.2);border-radius:var(--r);padding:12px 14px;margin-bottom:16px}
 .upload-tip-ico{flex-shrink:0;color:var(--accent2);font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;line-height:1}
 .upload-tip-text{font-size:12px;color:var(--ink2);line-height:1.6}
 .upload-tip-text b{color:var(--accent);font-weight:600}
-
+ 
 /* Option buttons */
 .opts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .opt{background:var(--card);border:1px solid var(--line2);border-radius:var(--r);padding:14px 16px;text-align:left;cursor:pointer;transition:all .2s;width:100%}
@@ -114,7 +114,7 @@ textarea.fi{min-height:100px;resize:vertical;line-height:1.5}
 .opt.sel{border-color:var(--ink);background:var(--card);box-shadow:inset 0 0 0 1px var(--ink)}
 .opt-l{font-size:13px;font-weight:600;color:var(--ink);display:block}
 .opt-d{font-size:11px;color:var(--ink3);font-weight:400;margin-top:2px;display:block}
-
+ 
 /* Checkbox grid */
 .checks{display:grid;grid-template-columns:1fr 1fr;gap:6px}
 .chk{display:flex;align-items:center;gap:10px;padding:11px 14px;background:var(--card);border:1px solid var(--line2);border-radius:var(--r);cursor:pointer;transition:border-color .2s}
@@ -122,7 +122,7 @@ textarea.fi{min-height:100px;resize:vertical;line-height:1.5}
 .chk:has(input:checked){border-color:var(--ink);background:var(--card)}
 .chk input{accent-color:var(--ink);width:15px;height:15px;cursor:pointer;flex-shrink:0}
 .chk span{font-size:13px;color:var(--ink);font-weight:500}
-
+ 
 /* Slider */
 .slider-wrap{background:var(--card);border:1px solid var(--line2);border-radius:var(--r);padding:18px 18px 16px;text-align:center}
 .s-val{font-family:'Cormorant Garamond',serif;font-size:40px;font-weight:500;color:var(--ink);line-height:1;margin-bottom:4px}
@@ -134,13 +134,13 @@ input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.15)}
 input[type=range]::-moz-range-track{height:2px;background:var(--line2);border-radius:1px}
 input[type=range]::-moz-range-thumb{width:20px;height:20px;background:var(--ink);border:none;border-radius:50%;cursor:pointer}
 .s-ends{display:flex;justify-content:space-between;font-size:11px;color:var(--ink3);margin-top:8px;font-weight:400}
-
+ 
 /* Actions */
 .actions{padding:20px 0 32px;position:sticky;bottom:0;background:linear-gradient(to bottom,transparent 0%,var(--bg) 20%);margin-top:auto}
 .btn-next{width:100%;background:var(--ink);color:var(--bg);border:none;padding:16px;border-radius:40px;font-size:14px;font-weight:600;cursor:pointer;transition:all .25s;letter-spacing:0.02em}
 .btn-next:hover{background:var(--accent)}
 .btn-next:disabled{background:var(--line2);cursor:not-allowed}
-
+ 
 /* PROCESSING */
 .processing{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:40px 20px}
 .proc-spinner{width:80px;height:80px;border-radius:50%;border:3px solid var(--line);border-top-color:var(--accent);animation:spin 1s linear infinite;margin-bottom:32px}
@@ -156,14 +156,14 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;background:var(--ink)
 .proc-step.done .proc-step-ico{background:var(--accent);color:#fff;border-color:var(--accent)}
 .proc-step.done .proc-step-ico::after{content:'✓'}
 .proc-step.active .proc-step-ico{border-top-color:transparent;animation:spin 0.8s linear infinite}
-
+ 
 /* RESULT */
 .result{padding:24px 0 40px;flex:1}
 .r-eyebrow{font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent2);margin-bottom:8px;font-weight:600}
 .r-title{font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:500;line-height:1.1;color:var(--ink);margin-bottom:8px;letter-spacing:-0.01em}
 .r-title em{color:var(--accent);font-style:italic}
 .r-meta{font-size:13px;color:var(--ink2);margin-bottom:24px;font-weight:400}
-
+ 
 .r-hero{background:var(--ink);color:var(--bg);border-radius:var(--r-lg);padding:24px;margin-bottom:20px}
 .r-hero-row{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;gap:12px}
 .r-hero-l{font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:6px;font-weight:600}
@@ -174,13 +174,13 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;background:var(--ink)
 .r-hero-tags{display:flex;gap:6px;flex-wrap:wrap}
 .r-tag{font-size:11px;padding:4px 10px;border-radius:40px;background:rgba(255,255,255,.08);color:rgba(255,255,255,.75);font-weight:500}
 .r-tag.a{background:rgba(184,151,106,.25);color:#E0C898}
-
+ 
 /* Sections */
 .r-sec{margin-bottom:20px}
 .r-sec-hd{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px;padding:0 4px}
 .r-sec-t{font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink3);font-weight:600}
 .r-sec-c{background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);padding:20px}
-
+ 
 /* Tứ chẩn summary */
 .diag-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-bottom:1px solid var(--line);padding-bottom:14px;margin-bottom:14px}
 .diag-grid:last-child{border-bottom:none;padding-bottom:0;margin-bottom:0}
@@ -190,7 +190,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;background:var(--ink)
 .diag-thumb img{width:100%;height:100%;object-fit:cover}
 .diag-l{font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent2);margin-bottom:4px;font-weight:600}
 .diag-v{font-size:11px;color:var(--ink);font-weight:500;line-height:1.5;text-align:left}
-
+ 
 /* Ngũ tạng */
 .tang-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
 .tang-c{padding:14px 4px;text-align:center;cursor:pointer;border-radius:var(--r);border:1px solid var(--line);background:transparent;transition:all .2s}
@@ -209,7 +209,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;background:var(--ink)
 .td-rec{padding-top:10px;border-top:1px solid var(--line)}
 .td-rec-l{font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);margin-bottom:5px;font-weight:600}
 .td-rec-b{font-size:12px;color:var(--ink);line-height:1.65}
-
+ 
 /* Energy bars */
 .bars{display:flex;flex-direction:column;gap:12px}
 .bi{display:flex;flex-direction:column;gap:5px}
@@ -220,7 +220,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;background:var(--ink)
 .bi-fill{height:100%;background:var(--ink);border-radius:2px;transition:width 1.2s cubic-bezier(.16,1,.3,1);width:0}
 .bi-fill.warn{background:var(--warm)}
 .bi-fill.good{background:var(--accent)}
-
+ 
 /* AI Analysis text */
 .ai-text{font-size:13px;color:var(--ink);line-height:1.75;font-weight:400}
 .ai-text strong{color:var(--accent);font-weight:600}
@@ -228,7 +228,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;background:var(--ink)
 .ai-text p{margin-bottom:10px}
 .ai-text ul{margin:8px 0 8px 18px}
 .ai-text li{margin-bottom:6px;font-size:13px}
-
+ 
 /* Plan */
 .plan{display:flex;flex-direction:column;gap:0}
 .pi{padding:14px 0;border-bottom:1px solid var(--line);display:flex;gap:14px;align-items:flex-start}
@@ -238,7 +238,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;background:var(--ink)
 .pi-c{flex:1}
 .pi-t{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:4px}
 .pi-d{font-size:12px;color:var(--ink2);line-height:1.6;font-weight:400}
-
+ 
 /* CTA & Download */
 .cta{background:var(--ink);color:var(--bg);border-radius:var(--r-lg);padding:24px;text-align:center;margin-bottom:20px}
 .cta-t{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:var(--bg);margin-bottom:6px}
@@ -248,7 +248,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;background:var(--ink)
 .cta-b:hover{background:var(--accent3);color:var(--accent)}
 .cta-b.g{background:transparent;color:var(--bg);border:1px solid rgba(255,255,255,.25)}
 .cta-b.g:hover{background:rgba(255,255,255,.08)}
-
+ 
 .download-card{background:linear-gradient(135deg,var(--accent),var(--accent2));color:var(--bg);border-radius:var(--r-lg);padding:24px;margin-bottom:20px;text-align:center}
 .download-ico{font-size:36px;margin-bottom:8px}
 .download-t{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;margin-bottom:6px}
@@ -256,13 +256,13 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;background:var(--ink)
 .download-btn{background:var(--bg);color:var(--accent);border:none;padding:12px 28px;border-radius:40px;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:8px}
 .download-btn:hover{transform:translateY(-1px);box-shadow:0 8px 20px rgba(0,0,0,.15)}
 .download-btn:disabled{opacity:.6;cursor:not-allowed;transform:none}
-
+ 
 .toolbar{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;padding-top:16px;border-top:1px solid var(--line)}
 .tb{background:none;border:1px solid var(--line2);color:var(--ink2);padding:9px 16px;border-radius:40px;font-size:12px;cursor:pointer;display:inline-flex;align-items:center;gap:5px;transition:all .2s;font-weight:500}
 .tb:hover{border-color:var(--ink);color:var(--ink)}
-
+ 
 .error-msg{background:rgba(192,64,64,.08);border:1px solid rgba(192,64,64,.3);border-radius:var(--r);padding:14px;font-size:13px;color:var(--error);margin-bottom:16px;line-height:1.5}
-
+ 
 /* CONSULTATION FORM */
 .consult-card{background:var(--ink);color:var(--bg);border-radius:var(--r-lg);padding:28px 24px;margin-bottom:20px;position:relative;overflow:hidden}
 .consult-card::before{content:'';position:absolute;top:-50px;right:-50px;width:200px;height:200px;background:radial-gradient(circle,rgba(184,151,106,.15),transparent 70%);border-radius:50%}
@@ -281,7 +281,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;background:var(--ink)
 .consult-perks{display:flex;gap:12px;margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,.1);position:relative}
 .consult-perk{flex:1;text-align:center;font-size:10px;color:rgba(255,255,255,.5);line-height:1.4}
 .consult-perk-ico{font-size:16px;display:block;margin-bottom:3px}
-
+ 
 /* SUCCESS STATE */
 .consult-success{display:none;text-align:center;padding:20px 0;position:relative}
 .consult-success.on{display:block}
@@ -289,7 +289,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;background:var(--ink)
 .success-t{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:var(--bg);margin-bottom:8px}
 .success-d{font-size:13px;color:rgba(255,255,255,.7);line-height:1.6;margin-bottom:14px}
 .success-d strong{color:var(--gold)}
-
+ 
 /* EXIT INTENT POPUP */
 .popup-overlay{display:none;position:fixed;inset:0;background:rgba(26,24,20,.6);z-index:1000;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);animation:fadein .3s ease}
 .popup-overlay.on{display:flex}
@@ -306,7 +306,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;background:var(--ink)
 .popup-btn:hover{background:var(--accent)}
 .popup-skip{background:transparent;border:none;color:var(--ink3);font-size:12px;cursor:pointer;padding:8px;text-decoration:underline;font-family:inherit}
 .popup-skip:hover{color:var(--ink2)}
-
+ 
 @media(max-width:480px){
   .row2,.opts,.checks,.upload-grid{grid-template-columns:1fr 1fr}
   .w-features{grid-template-columns:1fr}
@@ -318,7 +318,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;background:var(--ink)
   .consult-card{padding:22px 20px}
   .consult-t{font-size:22px}
 }
-
+ 
 @media print{
   .toolbar,.cta,.download-card,.consult-card,.popup-overlay{display:none}
   body{background:white}
@@ -326,9 +326,9 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;background:var(--ink)
 </style>
 </head>
 <body>
-
+ 
 <div class="app">
-
+ 
 <!-- TOP BAR -->
 <div class="topbar">
   <a class="brand" href="#" onclick="restart();return false;">
@@ -337,7 +337,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;background:var(--ink)
   </a>
   <div class="brand-tag">AI · v2.0</div>
 </div>
-
+ 
 <!-- ═══ WELCOME ═══ -->
 <div class="screen on" id="s-welcome">
   <div class="welcome">
@@ -346,7 +346,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;background:var(--ink)
     <p class="w-sub">Hệ thống phân tích kết hợp tứ chẩn cổ điển + AI Vision phân tích ảnh lưỡi, tay, mặt. Xuất hồ sơ Word A4 chuẩn phòng khám.</p>
     <button class="btn-primary" onclick="start()">Bắt đầu phân tích</button>
     <div class="w-foot">Miễn phí · Không cần đăng ký · 7-10 phút<br><span style="opacity:.6">tamthantri.vn</span></div>
-
+ 
     <div class="w-features">
       <div class="wf">
         <div class="wf-ico">📋</div>
@@ -379,7 +379,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;background:var(--ink)
     </div>
   </div>
 </div>
-
+ 
 <!-- ═══ QUIZ ═══ -->
 <div class="screen" id="s-quiz">
   <div class="progress">
@@ -389,7 +389,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;background:var(--ink)
     </div>
     <div class="p-bar"><div class="p-fill" id="pFill" style="width:12.5%"></div></div>
   </div>
-
+ 
   <!-- STEP 1: Thông tin cơ bản + ngày giờ sinh -->
   <div class="q qstep" id="q1" style="display:block">
     <div class="q-num">i.</div>
@@ -418,7 +418,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;background:var(--ink)
       </select>
     </div>
   </div>
-
+ 
   <!-- STEP 2: Triệu chứng lâm sàng -->
   <div class="q qstep" id="q2" style="display:none">
     <div class="q-num">ii.</div>
@@ -446,7 +446,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;background:var(--ink)
       </div>
     </div>
   </div>
-
+ 
   <!-- STEP 3: Giấc ngủ & tinh thần -->
   <div class="q qstep" id="q3" style="display:none">
     <div class="q-num">iii.</div>
@@ -487,7 +487,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;background:var(--ink)
       </div>
     </div>
   </div>
-
+ 
   <!-- STEP 4: Ăn uống & vận động -->
   <div class="q qstep" id="q4" style="display:none">
     <div class="q-num">iv.</div>
@@ -520,7 +520,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;background:var(--ink)
       </div>
     </div>
   </div>
-
+ 
   <!-- STEP 5: Thiệt chẩn (Upload 2 ảnh lưỡi: mặt trên + tĩnh mạch dưới) -->
   <div class="q qstep" id="q5" style="display:none">
     <div class="q-num">v.</div>
@@ -549,8 +549,8 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;background:var(--ink)
       <div class="upload-tip-text"><b style="color:#A0785A">Hướng dẫn chụp tĩnh mạch dưới lưỡi:</b> Cong lưỡi ngược lên trần miệng, cho đầu lưỡi chạm vòm họng. Chụp rõ <b>2 đường tĩnh mạch xanh</b> hai bên dưới lưỡi. AI sẽ đánh giá độ dày, màu sắc, độ ngoằn ngoèo để phát hiện huyết ứ, can âm hư, tâm dương hư.</div>
     </div>
   </div>
-
-
+ 
+ 
   <!-- STEP 6: Thủ chẩn (Upload lòng bàn tay) -->
   <div class="q qstep" id="q6" style="display:none">
     <div class="q-num">vi.</div>
@@ -575,7 +575,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;background:var(--ink)
       </label>
     </div>
   </div>
-
+ 
   <!-- STEP 7: Thần sắc (Upload khuôn mặt) -->
   <div class="q qstep" id="q7" style="display:none">
     <div class="q-num">vii.</div>
@@ -594,7 +594,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;background:var(--ink)
       </label>
     </div>
   </div>
-
+ 
   <!-- STEP 8: Xét nghiệm & mục tiêu -->
   <div class="q qstep" id="q8" style="display:none">
     <div class="q-num">viii.</div>
@@ -636,12 +636,12 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;background:var(--ink)
       </div>
     </div>
   </div>
-
+ 
   <div class="actions">
     <button class="btn-next" id="bNext" onclick="next()">Tiếp tục →</button>
   </div>
 </div>
-
+ 
 <!-- ═══ PROCESSING ═══ -->
 <div class="screen" id="s-processing">
   <div class="processing">
@@ -657,14 +657,14 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;background:var(--ink)
     </div>
   </div>
 </div>
-
+ 
 <!-- ═══ RESULT ═══ -->
 <div class="screen" id="s-result">
   <div class="result">
     <div class="r-eyebrow">Phân tích hoàn tất</div>
     <h2 class="r-title">Hồ sơ năng lượng <em>của bạn</em></h2>
     <div class="r-meta" id="rMeta">—</div>
-
+ 
     <!-- Hero summary -->
     <div class="r-hero">
       <div class="r-hero-row">
@@ -679,7 +679,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;background:var(--ink)
       </div>
       <div class="r-hero-tags" id="rTags"></div>
     </div>
-
+ 
     <!-- AI Analysis - Tóm tắt -->
     <div class="r-sec">
       <div class="r-sec-hd"><div class="r-sec-t">1. Tóm tắt định hướng</div></div>
@@ -687,7 +687,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;background:var(--ink)
         <div class="ai-text" id="rSummary"></div>
       </div>
     </div>
-
+ 
     <!-- Tứ chẩn -->
     <div class="r-sec">
       <div class="r-sec-hd"><div class="r-sec-t">2. Kết quả tứ chẩn</div></div>
@@ -695,7 +695,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;background:var(--ink)
         <div class="diag-grid" id="rDiag"></div>
       </div>
     </div>
-
+ 
     <!-- Radar 12 chỉ số -->
     <div class="r-sec">
       <div class="r-sec-hd"><div class="r-sec-t">3. Radar 12 chỉ số năng lượng</div></div>
@@ -703,7 +703,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;background:var(--ink)
         <div class="bars" id="rBars"></div>
       </div>
     </div>
-
+ 
     <!-- Ngũ tạng -->
     <div class="r-sec">
       <div class="r-sec-hd"><div class="r-sec-t">4. Phân tích ngũ tạng</div></div>
@@ -712,7 +712,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;background:var(--ink)
         <div class="tang-detail" id="rTangDetail"></div>
       </div>
     </div>
-
+ 
     <!-- Lộ trình -->
     <div class="r-sec">
       <div class="r-sec-hd"><div class="r-sec-t">5. Định hướng 4 tuần</div></div>
@@ -720,7 +720,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;background:var(--ink)
         <div class="plan" id="rPlan"></div>
       </div>
     </div>
-
+ 
     <!-- Phác đồ Đông y -->
     <div class="r-sec">
       <div class="r-sec-hd"><div class="r-sec-t">6. Phác đồ Đông y định hướng</div></div>
@@ -728,7 +728,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;background:var(--ink)
         <div class="ai-text" id="rRx"></div>
       </div>
     </div>
-
+ 
     <!-- Download Word -->
     <div class="download-card">
       <div class="download-ico">📄</div>
@@ -738,7 +738,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;background:var(--ink)
         <span>⬇</span><span>Tải hồ sơ Word</span>
       </button>
     </div>
-
+ 
     <!-- Consultation Form - Thu SĐT khách hàng -->
     <div class="consult-card" id="consultCard">
       <div class="consult-eyebrow">✦ Tư vấn cá nhân hóa</div>
@@ -755,7 +755,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;background:var(--ink)
         <div class="consult-perk"><span class="consult-perk-ico">💚</span>Hoàn toàn<br>miễn phí</div>
         <div class="consult-perk"><span class="consult-perk-ico">🔒</span>Bảo mật<br>thông tin</div>
       </div>
-
+ 
       <!-- Success state -->
       <div class="consult-success" id="consultSuccess">
         <div class="success-ico">🌿</div>
@@ -764,7 +764,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;background:var(--ink)
         <div class="consult-foot" style="margin-top:0">— Tâm Thân Trí · tamthantri.vn</div>
       </div>
     </div>
-
+ 
     <div class="toolbar">
       <button class="tb" onclick="restart()">↺ Làm lại</button>
       <button class="tb" onclick="window.print()">⎙ In</button>
@@ -772,7 +772,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;background:var(--ink)
     </div>
   </div>
 </div>
-
+ 
 <!-- EXIT INTENT POPUP -->
 <div class="popup-overlay" id="exitPopup">
   <div class="popup">
@@ -784,23 +784,23 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;background:var(--ink)
     <button class="popup-skip" onclick="closeExitPopup()">Cảm ơn, để lúc khác</button>
   </div>
 </div>
-
+ 
 </div>
-
+ 
 <script>
 // ═══════════════════════════════════════════════════════════════
 // CẤU HÌNH AI
 // ═══════════════════════════════════════════════════════════════
 const WORKER_URL = 'https://tamthantri-ai.giaminhthaoduoc.workers.dev';
 const AI_DEMO_MODE = true; // true = demo offline; false = gọi Worker thật
-
+ 
 // ═══════════════════════════════════════════════════════════════
 // CẤU HÌNH GOOGLE SHEETS (thu thập khách hàng)
 // ═══════════════════════════════════════════════════════════════
 // THẦY THAY URL APPS SCRIPT VÀO ĐÂY ↓
 const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbxsmkeWEht2c4_PLqee9ay_0Wpx36LYfD5CTohciPtu-RtY9rD5EYoCHrRAykJV3JH0pg/exec';
 // Ví dụ: 'https://script.google.com/macros/s/AKfycbxsmkeWEht.../exec'
-
+ 
 // ═══════════════════════════════════════════════════════════════
 // STATE
 // ═══════════════════════════════════════════════════════════════
@@ -815,7 +815,7 @@ var data = {
 var cur=1,total=8;
 var stepNames=['Thông tin','Triệu chứng','Giấc ngủ','Lối sống','Thiệt chẩn','Thủ chẩn','Thần sắc','Xét nghiệm'];
 var sMap={1:'Rất kém',2:'Kém',3:'Dưới trung bình',4:'Hơi kém',5:'Bình thường',6:'Khá tốt',7:'Tốt',8:'Rất tốt',9:'Xuất sắc',10:'Tuyệt vời'};
-
+ 
 // ═══════════════════════════════════════════════════════════════
 // NAVIGATION
 // ═══════════════════════════════════════════════════════════════
@@ -824,20 +824,20 @@ function start(){
   document.getElementById('s-quiz').classList.add('on');
   window.scrollTo({top:0,behavior:'smooth'});
 }
-
+ 
 function pickOne(el,key,val){
   el.parentElement.querySelectorAll('.opt').forEach(b=>b.classList.remove('sel'));
   el.classList.add('sel');
   data[key]=val;
 }
-
+ 
 function updSlider(el,vId,lId,key){
   var v=parseInt(el.value);
   document.getElementById(vId).textContent=v;
   document.getElementById(lId).textContent=sMap[v]||'';
   data[key]=v;
 }
-
+ 
 function collect(){
   data.symptoms=Array.from(document.querySelectorAll('[data-sym]:checked')).map(e=>e.dataset.sym);
   data.emotions=Array.from(document.querySelectorAll('[data-emo]:checked')).map(e=>e.dataset.emo);
@@ -851,7 +851,7 @@ function collect(){
   data.history=document.getElementById('iHistory')?.value||'';
   data.labs=document.getElementById('iLabs')?.value||'';
 }
-
+ 
 function next(){
   collect();
   // Validation cho bước 5 (bắt buộc 2 ảnh lưỡi)
@@ -883,7 +883,7 @@ function next(){
     runAnalysis();
   }
 }
-
+ 
 function prev(){
   if(cur>1){
     document.getElementById('q'+cur).style.display='none';
@@ -895,13 +895,13 @@ function prev(){
     window.scrollTo({top:0,behavior:'smooth'});
   }
 }
-
+ 
 function updProg(){
   document.getElementById('pNum').textContent=String(cur).padStart(2,'0');
   document.getElementById('pName').textContent=stepNames[cur-1];
   document.getElementById('pFill').style.width=Math.round(cur/total*100)+'%';
 }
-
+ 
 // ═══════════════════════════════════════════════════════════════
 // IMAGE UPLOAD + COMPRESSION
 // ═══════════════════════════════════════════════════════════════
@@ -922,7 +922,7 @@ function handleUpload(input,key){
     reader.readAsDataURL(blob);
   });
 }
-
+ 
 function compressImage(file,maxSize,quality){
   return new Promise((resolve,reject)=>{
     var reader=new FileReader();
@@ -947,7 +947,7 @@ function compressImage(file,maxSize,quality){
     reader.readAsDataURL(file);
   });
 }
-
+ 
 function renderUploadPreview(key,dataUrl){
   var card=document.getElementById('uc-'+key);
   if(!card)return;
@@ -955,7 +955,7 @@ function renderUploadPreview(key,dataUrl){
   card.classList.add('has-image');
   card.innerHTML='<div class="upload-preview"><img src="'+dataUrl+'" alt="'+labels[key]+'"><div class="upload-preview-overlay"><span class="upload-preview-label">'+labels[key]+'</span><button class="upload-preview-remove" type="button" onclick="event.preventDefault();event.stopPropagation();removeUpload(\''+key+'\')">×</button></div></div>';
 }
-
+ 
 function removeUpload(key){
   data.images[key]=null;
   var card=document.getElementById('uc-'+key);
@@ -965,7 +965,7 @@ function removeUpload(key){
   card.classList.remove('has-image');
   card.innerHTML='<div class="upload-icon">'+icons[key]+'</div><div class="upload-label">'+labels[key]+'</div><div class="upload-desc">'+descs[key]+'</div><input type="file" class="upload-input" id="upload-'+key+'" accept="image/*" onchange="handleUpload(this,\''+key+'\')">';
 }
-
+ 
 // ═══════════════════════════════════════════════════════════════
 // AI ANALYSIS - main flow
 // ═══════════════════════════════════════════════════════════════
@@ -974,20 +974,20 @@ async function runAnalysis(){
     updProcStep('upload','active');
     await sleep(900);
     updProcStep('upload','done');
-
+ 
     updProcStep('vision','active');
     document.getElementById('procStatus').textContent='AI đang đọc ảnh lưỡi, tay và khuôn mặt...';
     await sleep(1800);
     updProcStep('vision','done');
-
+ 
     updProcStep('biophase','active');
     document.getElementById('procStatus').textContent='Đang biện chứng luận trị theo Đông y...';
     await sleep(1500);
     updProcStep('biophase','done');
-
+ 
     updProcStep('report','active');
     document.getElementById('procStatus').textContent='Tổng hợp hồ sơ cá nhân hóa...';
-
+ 
     // Gọi AI thật hoặc dùng analysis local
     var result;
     if(AI_DEMO_MODE){
@@ -999,7 +999,7 @@ async function runAnalysis(){
     window._result=result;
     updProcStep('report','done');
     await sleep(400);
-
+ 
     renderResult(result);
     document.getElementById('s-processing').classList.remove('on');
     document.getElementById('s-result').classList.add('on');
@@ -1011,16 +1011,16 @@ async function runAnalysis(){
     document.getElementById('s-quiz').classList.add('on');
   }
 }
-
+ 
 function sleep(ms){return new Promise(r=>setTimeout(r,ms))}
-
+ 
 function updProcStep(key,state){
   var el=document.querySelector('[data-step="'+key+'"]');
   if(!el)return;
   el.classList.remove('active','done');
   if(state)el.classList.add(state);
 }
-
+ 
 async function callVisionAPI(){
   var payload={
     profile:{
@@ -1040,7 +1040,7 @@ async function callVisionAPI(){
   if(!resp.ok)throw new Error('AI service error');
   return await resp.json();
 }
-
+ 
 // ═══════════════════════════════════════════════════════════════
 // LOCAL ANALYSIS (Demo mode - khi AI_DEMO_MODE = true)
 // ═══════════════════════════════════════════════════════════════
@@ -1052,7 +1052,7 @@ function computeLocalAnalysis(){
     var dob=new Date(d.dob);
     age=new Date().getFullYear()-dob.getFullYear();
   }
-
+ 
   // Tính Ngũ tạng theo logic Đông y
   var can=70,tam=70,ty=72,phe=75,than=70;
   
@@ -1159,12 +1159,12 @@ function computeLocalAnalysis(){
   
   return {tang:tang,radar:radar,total:total,weakest:weakest,age:age,summary:summary,plan:plan,rx:rx,profile:d};
 }
-
+ 
 function scoreToRadar(score){
   // Convert 0-100 to 0-10
   return Math.max(1,Math.min(10,Math.round(score/10)));
 }
-
+ 
 function buildSummary(tang,age,d,weakest){
   var tangNames={Can:'Can (Gan)',Tam:'Tâm (Tim)',Ty:'Tỳ vị',Phe:'Phế (Phổi)',Than:'Thận'};
   var elementMap={Can:'Mộc',Tam:'Hỏa',Ty:'Thổ',Phe:'Kim',Than:'Thủy'};
@@ -1194,7 +1194,7 @@ function buildSummary(tang,age,d,weakest){
   
   return parts.join('');
 }
-
+ 
 function getTangNote(tang,score){
   var notes={
     Can:'tổn thương sơ tiết — kéo theo cảm xúc và tiêu hóa rối loạn',
@@ -1205,7 +1205,7 @@ function getTangNote(tang,score){
   };
   return notes[tang];
 }
-
+ 
 function buildPlan(tang,d){
   var plan=[];
   var weakest=Object.entries(tang).sort((a,b)=>a[1]-b[1])[0][0];
@@ -1233,7 +1233,7 @@ function buildPlan(tang,d){
   }
   return plan.slice(0,5);
 }
-
+ 
 function buildRxNarrative(tang,d,weakest){
   var hasBloodStasis=!!d.images.tongueBottom;
   var parts=[];
@@ -1262,7 +1262,7 @@ function buildRxNarrative(tang,d,weakest){
   
   return parts.join('');
 }
-
+ 
 // ═══════════════════════════════════════════════════════════════
 // RENDER RESULT
 // ═══════════════════════════════════════════════════════════════
@@ -1293,7 +1293,7 @@ var TANG_INFO={
     recHi:'Giữ ấm vùng lưng. Ngủ đủ giấc.',
     recLo:'Ưu tiên #1: ngủ đủ và đúng giờ. Bổ sung Câu kỷ tử, Thục địa. Giảm stress.'}
 };
-
+ 
 function renderResult(r){
   var d=data;
   
@@ -1384,11 +1384,9 @@ function renderResult(r){
   // Rx narrative
   document.getElementById('rRx').innerHTML=r.rx;
   
-  // CTA mailto
-  var mailBody='Họ tên: '+d.name+'\nĐiểm tổng: '+r.total+'/100\nNgũ Tạng: Can '+r.tang.Can+', Tâm '+r.tang.Tam+', Tỳ '+r.tang.Ty+', Phế '+r.tang.Phe+', Thận '+r.tang.Than+'\nTrọng tâm: '+focus.name+'\n\nTôi muốn đặt lịch tư vấn 1-1.';
-  document.getElementById('ctaMail').href='mailto:lienhe@tamthantri.vn?subject='+encodeURIComponent('[TTT] Tư vấn - '+d.name)+'&body='+encodeURIComponent(mailBody);
+  // (CTA mailto cũ đã bị thay bằng form thu SĐT - không cần gán href nữa)
 }
-
+ 
 function analyzeTongue(){
   if(!data.images.tongue && !data.images.tongueBottom)return 'Chưa có ảnh để phân tích';
   var parts=[];
@@ -1408,7 +1406,7 @@ function analyzeFace(){
   if(!data.images.face)return 'Chưa có ảnh để phân tích';
   return 'AI quan sát: sắc mặt hơi xỉn, quầng mắt sậm nhẹ. Gợi ý Thận âm bất túc.';
 }
-
+ 
 function showTang(k,sc){
   var t=TANG_INFO[k];
   var hi=sc>=65;
@@ -1417,7 +1415,7 @@ function showTang(k,sc){
     +'<p class="td-body">'+(hi?t.hi:t.lo)+'</p>'
     +'<div class="td-rec"><div class="td-rec-l">✦ Định hướng phục hồi</div><div class="td-rec-b">'+(hi?t.recHi:t.recLo)+'</div></div>';
 }
-
+ 
 function copyResult(){
   if(!window._result)return;
   var r=window._result;
@@ -1425,7 +1423,7 @@ function copyResult(){
   if(navigator.clipboard)navigator.clipboard.writeText(txt).then(()=>alert('Đã sao chép!'));
   else{var ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);alert('Đã sao chép!');}
 }
-
+ 
 function downloadWord(){
   // Trong production: gọi Worker để generate docx server-side
   // Demo: thông báo
@@ -1438,20 +1436,20 @@ function downloadWord(){
     alert('Tính năng tải file Word A4 đầy đủ 14 trang đã có sẵn trong file Ho-so-Tam-Than-Tri_HongXinhGai.docx. Khi deploy thực tế, hệ thống sẽ tự động sinh file Word riêng cho từng người dùng.');
   },1500);
 }
-
+ 
 // ═══════════════════════════════════════════════════════════════
 // THU SĐT KHÁCH HÀNG → GỬI VỀ GOOGLE SHEETS
 // ═══════════════════════════════════════════════════════════════
 var _consultSubmitted = false;
 var _exitPopupShown = false;
-
+ 
 function validatePhone(phone){
   // Loại bỏ khoảng trắng và dấu +
   var clean = phone.replace(/[\s\+]/g,'');
   // SĐT VN: 9-11 số, bắt đầu 0 hoặc 84
   return /^(0|84)[0-9]{8,10}$/.test(clean);
 }
-
+ 
 async function submitConsult(event){
   event.preventDefault();
   if(_consultSubmitted) return false;
@@ -1541,7 +1539,7 @@ async function submitConsult(event){
   }
   return false;
 }
-
+ 
 // ═══════════════════════════════════════════════════════════════
 // EXIT INTENT POPUP - hiện khi khách định rời trang
 // ═══════════════════════════════════════════════════════════════
@@ -1573,17 +1571,17 @@ function setupExitIntent(){
     }
   });
 }
-
+ 
 function showExitPopup(){
   if(_exitPopupShown || _consultSubmitted) return;
   _exitPopupShown = true;
   document.getElementById('exitPopup').classList.add('on');
 }
-
+ 
 function closeExitPopup(){
   document.getElementById('exitPopup').classList.remove('on');
 }
-
+ 
 function scrollToForm(){
   closeExitPopup();
   var card = document.getElementById('consultCard');
@@ -1596,12 +1594,12 @@ function scrollToForm(){
     }, 600);
   }
 }
-
+ 
 // Khởi tạo exit intent khi page load
 window.addEventListener('DOMContentLoaded', function(){
   setupExitIntent();
 });
-
+ 
 function restart(){
   cur=1;
   data={name:'Khách',dob:null,tob:null,gender:null,job:null,mainSymptoms:'',history:'',symptoms:[],sleep:5,bedtime:null,stress:5,emotions:[],exercise:null,energy:null,diet:[],images:{tongue:null,tongueBottom:null,palmL:null,palmR:null,face:null,labs:null,rx:null},labs:'',goals:[]};
