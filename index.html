@@ -1425,16 +1425,50 @@ function copyResult(){
 }
  
 function downloadWord(){
-  // Trong production: gọi Worker để generate docx server-side
-  // Demo: thông báo
+  // Hồ sơ Word đầy đủ sẽ được thầy gửi qua Zalo/Email sau buổi tư vấn 1-1
   var btn=document.getElementById('dlBtn');
-  btn.innerHTML='<span>⏳</span><span>Đang tạo file...</span>';
+  btn.innerHTML='<span>⏳</span><span>Đang chuẩn bị...</span>';
   btn.disabled=true;
   setTimeout(()=>{
     btn.innerHTML='<span>⬇</span><span>Tải hồ sơ Word</span>';
     btn.disabled=false;
-    alert('Tính năng tải file Word A4 đầy đủ 14 trang đã có sẵn trong file Ho-so-Tam-Than-Tri_HongXinhGai.docx. Khi deploy thực tế, hệ thống sẽ tự động sinh file Word riêng cho từng người dùng.');
-  },1500);
+    showWordPopup();
+  },800);
+}
+ 
+function showWordPopup(){
+  // Tạo popup nếu chưa có
+  var existing = document.getElementById('wordPopup');
+  if(existing){existing.classList.add('on');return;}
+  
+  var html = '<div class="popup-overlay on" id="wordPopup">'+
+    '<div class="popup">'+
+      '<button class="popup-close" onclick="closeWordPopup()" aria-label="Đóng">×</button>'+
+      '<div class="popup-ico">📋</div>'+
+      '<div class="popup-t">Hồ sơ Word <em>đầy đủ 14 trang</em></div>'+
+      '<div class="popup-d">Để đảm bảo chất lượng tư vấn cá nhân hóa, <strong>thầy sẽ gửi hồ sơ Word A4 đầy đủ qua Zalo/Email</strong> sau buổi tư vấn 1-1 (hoàn toàn miễn phí).<br><br>Hồ sơ gồm: phân tích chi tiết 12 chỉ số · Mandala Ngũ Hành · phác đồ Đông y · lộ trình 4 tuần.</div>'+
+      '<button class="popup-btn" onclick="scrollToFormFromWord()">📞 Đăng ký nhận tư vấn miễn phí</button>'+
+      '<button class="popup-skip" onclick="closeWordPopup()">Để lúc khác</button>'+
+    '</div>'+
+  '</div>';
+  document.body.insertAdjacentHTML('beforeend', html);
+}
+ 
+function closeWordPopup(){
+  var p = document.getElementById('wordPopup');
+  if(p) p.classList.remove('on');
+}
+ 
+function scrollToFormFromWord(){
+  closeWordPopup();
+  var card = document.getElementById('consultCard');
+  if(card){
+    card.scrollIntoView({behavior:'smooth', block:'center'});
+    setTimeout(function(){
+      var nameInput = document.getElementById('cfName');
+      if(nameInput) nameInput.focus();
+    }, 600);
+  }
 }
  
 // ═══════════════════════════════════════════════════════════════
@@ -1642,3 +1676,4 @@ function restart(){
 </script>
 </body>
 </html>
+ 
