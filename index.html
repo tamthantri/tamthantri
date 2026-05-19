@@ -792,7 +792,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;background:var(--ink)
 // CẤU HÌNH AI
 // ═══════════════════════════════════════════════════════════════
 const WORKER_URL = 'https://tamthantri-ai.giaminhthaoduoc.workers.dev';
-const AI_DEMO_MODE = false; // true = demo offline; false = gọi Worker thật
+const AI_DEMO_MODE = true; // true = demo offline; false = gọi Worker thật
 
 // ═══════════════════════════════════════════════════════════════
 // CẤU HÌNH GOOGLE SHEETS (thu thập khách hàng)
@@ -1022,9 +1022,16 @@ function updProcStep(key,state){
 }
 
 async function callVisionAPI(){
+  // Tính tuổi từ DOB
+  var age=null;
+  if(data.dob){
+    var dob=new Date(data.dob);
+    age=new Date().getFullYear()-dob.getFullYear();
+  }
+  
   var payload={
     profile:{
-      name:data.name,dob:data.dob,tob:data.tob,gender:data.gender,job:data.job,
+      name:data.name,dob:data.dob,age:age,tob:data.tob,gender:data.gender,job:data.job,
       mainSymptoms:data.mainSymptoms,history:data.history,symptoms:data.symptoms,
       sleep:data.sleep,bedtime:data.bedtime,stress:data.stress,emotions:data.emotions,
       exercise:data.exercise,energy:data.energy,diet:data.diet,
@@ -1032,13 +1039,46 @@ async function callVisionAPI(){
     },
     images:data.images
   };
-  var resp=await fetch(WORKER_URL,{
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify(payload)
-  });
-  if(!resp.ok)throw new Error('AI service error');
-  return await resp.json();
+  
+  console.log('[AI] Calling Worker:', WORKER_URL);
+  console.log('[AI] Payload size:', JSON.stringify(payload).length, 'bytes');
+  
+  var resp;
+  try {
+    resp = await fetch(WORKER_URL, {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(payload)
+    });
+  } catch(e){
+    throw new Error('Không kết nối được AI server. Vui lòng kiểm tra mạng.');
+  }
+  
+  if(!resp.ok){
+    var errMsg='AI service lỗi ('+resp.status+')';
+    try {
+      var errData=await resp.json();
+      if(errData.error)errMsg=errData.error;
+    } catch(e){}
+    throw new Error(errMsg);
+  }
+  
+  var result=await resp.json();
+  
+  // Đảm bảo có age trong result để renderResult dùng
+  if(!result.age && age) result.age=age;
+  
+  // Override các field tứ chẩn nếu Worker không trả về đủ (fallback)
+  if(!result.weakest && result.tang){
+    var minScore=999, minKey='Can';
+    ['Can','Tam','Ty','Phe','Than'].forEach(function(k){
+      if(result.tang[k]<minScore){minScore=result.tang[k];minKey=k;}
+    });
+    result.weakest=minKey;
+  }
+  
+  console.log('[AI] Response received, total score:', result.total);
+  return result;
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -1384,10 +1424,16 @@ function renderResult(r){
   // Rx narrative
   document.getElementById('rRx').innerHTML=r.rx;
   
-  
+  // (CTA mailto cũ đã bị thay bằng form thu SĐT - không cần gán href nữa)
 }
 
 function analyzeTongue(){
+  // Ưu tiên dùng phân tích AI từ Worker (nếu có)
+  var r=window._result;
+  if(r && r.tongueAnalysis && r.tongueAnalysis !== 'Chưa có ảnh để phân tích'){
+    return r.tongueAnalysis;
+  }
+  // Fallback: nếu không có AI hoặc demo mode
   if(!data.images.tongue && !data.images.tongueBottom)return 'Chưa có ảnh để phân tích';
   var parts=[];
   if(data.images.tongue){
@@ -1399,10 +1445,18 @@ function analyzeTongue(){
   return parts.join('<br>');
 }
 function analyzePalm(){
+  var r=window._result;
+  if(r && r.palmAnalysis && r.palmAnalysis !== 'Chưa có ảnh để phân tích'){
+    return r.palmAnalysis;
+  }
   if(!data.images.palmL&&!data.images.palmR)return 'Chưa có ảnh để phân tích';
   return 'AI quan sát: lòng tay hơi nhợt, mô gò Thận vùng cổ tay không đầy. Gợi ý huyết hư.';
 }
 function analyzeFace(){
+  var r=window._result;
+  if(r && r.faceAnalysis && r.faceAnalysis !== 'Chưa có ảnh để phân tích'){
+    return r.faceAnalysis;
+  }
   if(!data.images.face)return 'Chưa có ảnh để phân tích';
   return 'AI quan sát: sắc mặt hơi xỉn, quầng mắt sậm nhẹ. Gợi ý Thận âm bất túc.';
 }
@@ -1425,16 +1479,50 @@ function copyResult(){
 }
 
 function downloadWord(){
-  // Trong production: gọi Worker để generate docx server-side
-  // Demo: thông báo
+  // Hồ sơ Word đầy đủ sẽ được thầy gửi qua Zalo/Email sau buổi tư vấn 1-1
   var btn=document.getElementById('dlBtn');
-  btn.innerHTML='<span>⏳</span><span>Đang tạo file...</span>';
+  btn.innerHTML='<span>⏳</span><span>Đang chuẩn bị...</span>';
   btn.disabled=true;
   setTimeout(()=>{
     btn.innerHTML='<span>⬇</span><span>Tải hồ sơ Word</span>';
     btn.disabled=false;
-    alert('Tính năng tải file Word A4 đầy đủ 14 trang đã có sẵn trong file Ho-so-Tam-Than-Tri_HongXinhGai.docx. Khi deploy thực tế, hệ thống sẽ tự động sinh file Word riêng cho từng người dùng.');
-  },1500);
+    showWordPopup();
+  },800);
+}
+
+function showWordPopup(){
+  // Tạo popup nếu chưa có
+  var existing = document.getElementById('wordPopup');
+  if(existing){existing.classList.add('on');return;}
+  
+  var html = '<div class="popup-overlay on" id="wordPopup">'+
+    '<div class="popup">'+
+      '<button class="popup-close" onclick="closeWordPopup()" aria-label="Đóng">×</button>'+
+      '<div class="popup-ico">📋</div>'+
+      '<div class="popup-t">Hồ sơ Word <em>đầy đủ 14 trang</em></div>'+
+      '<div class="popup-d">Để đảm bảo chất lượng tư vấn cá nhân hóa, <strong>thầy sẽ gửi hồ sơ Word A4 đầy đủ qua Zalo/Email</strong> sau buổi tư vấn 1-1 (hoàn toàn miễn phí).<br><br>Hồ sơ gồm: phân tích chi tiết 12 chỉ số · Mandala Ngũ Hành · phác đồ Đông y · lộ trình 4 tuần.</div>'+
+      '<button class="popup-btn" onclick="scrollToFormFromWord()">📞 Đăng ký nhận tư vấn miễn phí</button>'+
+      '<button class="popup-skip" onclick="closeWordPopup()">Để lúc khác</button>'+
+    '</div>'+
+  '</div>';
+  document.body.insertAdjacentHTML('beforeend', html);
+}
+
+function closeWordPopup(){
+  var p = document.getElementById('wordPopup');
+  if(p) p.classList.remove('on');
+}
+
+function scrollToFormFromWord(){
+  closeWordPopup();
+  var card = document.getElementById('consultCard');
+  if(card){
+    card.scrollIntoView({behavior:'smooth', block:'center'});
+    setTimeout(function(){
+      var nameInput = document.getElementById('cfName');
+      if(nameInput) nameInput.focus();
+    }, 600);
+  }
 }
 
 // ═══════════════════════════════════════════════════════════════
